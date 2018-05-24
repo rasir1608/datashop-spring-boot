@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.Result;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class UserController {
     @Transactional
     public Map registerUser(@RequestBody JSONObject req){
         String account = (String) req.get("account");
-        System.out.println(CookieUtil.getCookie("bear"));
+        System.out.println(account);
         DUser target = userService.getUserByAccount(account);
         if(target != null) {
             throw new DatashopException("帐号已被注册，请重新注册",400);
@@ -77,7 +76,8 @@ public class UserController {
         } else {
             user.setPassword(null);
             Map<String,Object> cookie = new HashMap<>();
-            cookie.put("userInfo",user);
+            cookie.put("userId",String.valueOf(user.getId()));
+            cookie.put("account",user.getAccount());
             cookie.put("maxAge",String.valueOf(60*60*1000));
             cookie.put("beginTime",String.valueOf(new Date().getTime()));
             CookieUtil.addCookie("bear",cookie);

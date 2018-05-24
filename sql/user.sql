@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `d_user` (
   `account` char(50) NOT NULL comment '用户账号',
   `name` char(50) NOT NULL comment '用户姓名',
   `password` char(128) NOT NULL comment '密码',
-  `headerurl` varchar(255) NOT NULL comment '头像URL地址',
+  `headerurl` varchar(255) DEFAULT NULL comment '头像URL地址',
   `role` int(1) DEFAULT 1 comment '用户权限 1普通用户，5最高管理员',
   `create_time` varchar(20) comment '创建时间',
   `update_time` varchar(20) comment '更新时间',

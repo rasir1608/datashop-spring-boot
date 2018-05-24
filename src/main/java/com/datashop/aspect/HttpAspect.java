@@ -1,5 +1,6 @@
 package com.datashop.aspect;
 
+import com.datashop.exception.DatashopException;
 import com.datashop.utils.CookieUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,7 +11,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by rasir on 2018/5/24.
@@ -30,13 +33,34 @@ public class HttpAspect {
 
         HttpServletRequest request = attributes.getRequest();
 
-        Map cookie = CookieUtil.getCookie("bear",Map.class);
+        String url = request.getRequestURI();
 
-        if(cookie != null) {
-            System.out.println(cookie.get("userInfo"));
-            System.out.println(new Long((String) cookie.get("maxAge")));
-            System.out.println(new Long((String) cookie.get("beginTime")));
+        String pattern = "/user/((login)|(register)|(logout))$";
+
+        System.out.println(url);
+        System.out.println(Pattern.matches(pattern,url));
+
+        if(Pattern.matches(pattern,url)){
+            CookieUtil.removeCookie("bear");
+        } else {
+            Map cookie = CookieUtil.getCookie("bear",Map.class);
+            if(cookie != null) {
+                Long maxAge = new Long((String) cookie.get("maxAge"));
+                Long beginTime = new Long((String) cookie.get("beginTime"));
+                Integer userId = new Integer((String) cookie.get("userId"));
+                String account = (String) cookie.get("account");
+                Long now = new Long(new Date().getTime());
+                if(now - beginTime > maxAge) {
+                    throw new DatashopException("登陆超时，请重新登陆！",302);
+                } else {
+                    cookie.put("beginTime",String.valueOf(now));
+                    CookieUtil.addCookie("bear",cookie);
+                }
+            } else {
+                throw new DatashopException("请先登陆！",302);
+            }
         }
+
     }
 
 }
