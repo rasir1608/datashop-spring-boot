@@ -1,0 +1,27 @@
+jdbc:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/datashop?useUnicode=true
+  userName: root
+  password: 123456
+
+
+#mybatis设置
+mybatis:
+  config_file: mybatis-config.xml
+  mapper_path: /mapper/**.xml
+  entity_package: com.datashop.domain
+
+
+server:
+  port: 8888
+spring:
+  jpa:
+    show-sql: true
+
+
+#安全设置security
+security:
+  basic:
+    enabled: false
+
+
