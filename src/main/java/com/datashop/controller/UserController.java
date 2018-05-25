@@ -1,6 +1,7 @@
 package com.datashop.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.datashop.bean.Auth;
 import com.datashop.domain.DUser;
 import com.datashop.exception.DatashopException;
 import com.datashop.server.impl.UserServiceImpl;
@@ -27,20 +28,20 @@ public class UserController {
 
     private BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder(11);
 
-    @GetMapping("/{id}")
+    @GetMapping("/getUserById/{id}")
     public Map getUserById(@PathVariable int id){
         DUser user = userService.getUserById(id);
         if(user != null) {
             user.setPassword(null);
             return ResultUtil.success(user);
         } else {
-            throw new DatashopException("您输入帐号有误",404);
+            throw new DatashopException("您输入ID有误",404);
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/create")
     @Transactional
-    public Map registerUser(@RequestBody JSONObject req){
+    public Map create(@RequestBody JSONObject req){
         String account = (String) req.get("account");
         System.out.println(account);
         DUser target = userService.getUserByAccount(account);
@@ -62,6 +63,46 @@ public class UserController {
         }
     }
 
+    @PutMapping("/update")
+    @Transactional
+    public Map update(@RequestBody JSONObject req){
+        Map cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        Integer reqId = req.getInteger("id");
+        String reqPasswrod = req.getString("password");
+        String reqName = req.getString("name");
+        Integer reqRole = req.getInteger("role");
+        String reqHeadurl = req.getString("headurl");
+        if(reqId == null) reqId = userId;
+        DUser reqUser = userService.getUserById(reqId);
+
+        if( reqUser == null) {
+            throw new DatashopException("要修改的用户不存在",404);
+        }
+
+        reqUser.setId(reqId);
+        if(reqPasswrod != null) reqUser.setPassword(bCrypt.encode(reqPasswrod));
+        if(reqName != null) reqUser.setName(reqName);
+        if(reqRole != null) reqUser.setRole(reqRole);
+        if(reqHeadurl != null) reqUser.setHeaderurl(reqHeadurl);
+        reqUser.setUpdateTime(String.valueOf(new Date().getTime()));
+
+
+        if(userId != reqId){
+            DUser user = userService.getUserById(userId);
+            if(user != null){
+                if(user.getRole() < Auth.ADMIN.getRole()) {
+                    throw new DatashopException("只有管理员才能修改非本人的用户信息！",401);
+                } else {
+                    return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",500);
+                }
+            } else {
+                throw new DatashopException("登录信息失效！",401);
+            }
+        } else {
+            return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",500);
+        }
+    }
 
     @PostMapping("/login")
     public Map login(@RequestBody JSONObject req){
@@ -87,8 +128,30 @@ public class UserController {
 
     @GetMapping("/logout")
     public Map logout(){
-        CookieUtil.removeCookie("bear");
         return ResultUtil.success("帐号注销成功！");
+    }
+
+    @GetMapping("/info")
+    public Map getCurrentUser(){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        DUser user = userService.getUserById(userId);
+        if(user != null) {
+            user.setPassword(null);
+            return ResultUtil.success(user);
+        } else {
+            throw new DatashopException("请先登录！",404);
+        }
+    }
+
+    @GetMapping("/queryByName/{name}")
+    public Map queryByName(@PathVariable String name){
+        return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",404);
+    }
+
+    @GetMapping("/queryAll")
+    public Map queryAll(){
+        return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);
     }
 
 }

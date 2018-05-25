@@ -7,6 +7,7 @@ import com.datashop.server.inter.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 
 /**
@@ -19,28 +20,53 @@ public class UserServiceImpl implements UserService {
     private DUserMapper userMapper;
 
     @Override
-    public int deleteById(Integer id) {
-        return 0;
+    public Boolean deleteById(Integer id) {
+        try {
+             userMapper.deleteByUserId(id);
+             return true;
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
     @Override
     public DUser getUserById(Integer id) {
-        return userMapper.selectUserById(id);
+        return userMapper.findById(id);
     }
 
     @Override
     public List<DUser> selectAll() {
-        return null;
+        try {
+            return userMapper.selectAll();
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
     @Override
     public DUser updateById(DUser record) {
-        return null;
+        try{
+            userMapper.updateUserById(record);
+            DUser retUser = userMapper.findById(record.getId());
+            retUser.setPassword(null);
+            return retUser;
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
     @Override
     public DUser getUser(DUser user) {
-        return null;
+        DUser temp = new DUser();
+        if(user.getId() != null) temp.setId(user.getId());
+        else if(user.getAccount() != null) temp.setAccount(user.getAccount());
+        else if(user.getName() != null) temp.setName(user.getName());
+        else throw new DatashopException("需要用户ID或者name或者帐号进行查询",400);
+        try {
+            return userMapper.getUser(temp);
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
     @Override
@@ -55,13 +81,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DUser login(DUser user) {
-        return null;
-    }
-
-    @Override
     public List<DUser> getUserListByName(String name) {
-        return null;
+        try {
+            return userMapper.selectUserByName("%"+name+"%");
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
     @Override

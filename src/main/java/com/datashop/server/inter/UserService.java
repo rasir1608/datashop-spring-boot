@@ -11,13 +11,11 @@ import java.util.List;
 
 public interface UserService {
 
-    int deleteById(Integer id);
+    Boolean deleteById(Integer id);
 
     DUser getUserById(Integer id);
 
-
     List<DUser> selectAll();
-
 
     DUser updateById(DUser record);
 
@@ -27,9 +25,7 @@ public interface UserService {
 
     DUser saveUser(DUser user);
 
-    DUser login(DUser user);
+    DUser getUserByAccount(String account);
 
     List<DUser> getUserListByName(String name);
-
-    DUser getUserByAccount(String account);
 }

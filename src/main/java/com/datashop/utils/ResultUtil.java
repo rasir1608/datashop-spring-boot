@@ -1,4 +1,6 @@
 package com.datashop.utils;
+import com.datashop.exception.DatashopException;
+
 import java.util.HashMap;
 
 /**
@@ -29,6 +31,14 @@ public class ResultUtil {
         result.put("msg",msg);
         result.put("state",state);
         return result;
+    }
+
+    public static Result handleResult(Object ret,String errMsg,int errCode){
+        if(ret != null) {
+          return success(ret);
+        } else {
+            throw new DatashopException(errMsg,errCode);
+        }
     }
 }
 

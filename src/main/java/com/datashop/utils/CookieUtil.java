@@ -49,8 +49,6 @@ public class CookieUtil {
         try {
 
             String v = URLEncoder.encode(new Gson().toJson(object), "UTF-8");
-            System.out.println(v);
-            System.out.println(object);
             Cookie cookie = new Cookie(name, v);
             cookie.setPath("/");
             cookie.setMaxAge(Integer.MAX_VALUE);// 设置保存cookie最大时长

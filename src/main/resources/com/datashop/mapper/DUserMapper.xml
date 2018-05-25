@@ -34,7 +34,7 @@
       update_time = #{updateTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, account, name, password, headerurl, role, create_time, update_time
     from d_user
     where id = #{id,jdbcType=INTEGER}
@@ -57,5 +57,12 @@
     <if test="name != null and name != ''">
       name = #{name}
     </if>
+  </select>
+  <select id="selectUserByName" resultMap="BaseResultMap">
+    select id, account, name, headerurl, role, create_time, update_time
+    from d_user
+    where
+    name LIKE #{name}
+    ORDER BY LENGTH(`name`)
   </select>
 </mapper>

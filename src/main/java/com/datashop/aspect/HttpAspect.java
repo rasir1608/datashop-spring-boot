@@ -35,10 +35,7 @@ public class HttpAspect {
 
         String url = request.getRequestURI();
 
-        String pattern = "/user/((login)|(register)|(logout))$";
-
-        System.out.println(url);
-        System.out.println(Pattern.matches(pattern,url));
+        String pattern = "/user/((login)|(create)|(logout))$";
 
         if(Pattern.matches(pattern,url)){
             CookieUtil.removeCookie("bear");
@@ -47,8 +44,6 @@ public class HttpAspect {
             if(cookie != null) {
                 Long maxAge = new Long((String) cookie.get("maxAge"));
                 Long beginTime = new Long((String) cookie.get("beginTime"));
-                Integer userId = new Integer((String) cookie.get("userId"));
-                String account = (String) cookie.get("account");
                 Long now = new Long(new Date().getTime());
                 if(now - beginTime > maxAge) {
                     throw new DatashopException("登陆超时，请重新登陆！",302);

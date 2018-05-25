@@ -9,11 +9,13 @@ public interface DUserMapper {
 
     int insert(DUser record);
 
-    DUser selectUserById(Integer id);
+    DUser findById(Integer id);
 
     List<DUser> selectAll();
 
     int updateUserById(DUser record);
 
     DUser getUser(DUser user);
+
+    List<DUser> selectUserByName(String name);
 }
