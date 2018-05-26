@@ -7,7 +7,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 @EnableTransactionManagement
 @MapperScan(value = "com.datashop.mapper")
 public class Application {

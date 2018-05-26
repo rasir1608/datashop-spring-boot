@@ -3,9 +3,9 @@ package com.datashop.domain;
 public class DPowerMapping {
     private Integer id;
 
-    private String userId;
+    private Integer userId;
 
-    private String projectId;
+    private Integer projectId;
 
     private Integer power;
 
@@ -21,20 +21,20 @@ public class DPowerMapping {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId == null ? null : projectId.trim();
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getPower() {

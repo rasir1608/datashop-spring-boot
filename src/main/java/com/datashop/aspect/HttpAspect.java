@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,6 +24,9 @@ import java.util.regex.Pattern;
 @Component
 public class HttpAspect {
 
+    @Value(value = "#${server.context-path}")
+    private String contextPath;
+
     @Pointcut("execution( * com.datashop.controller.*.*(..))")
     public void cutControllers(){}
 
@@ -35,7 +39,7 @@ public class HttpAspect {
 
         String url = request.getRequestURI();
 
-        String pattern = "/user/((login)|(create)|(logout))$";
+        String pattern = contextPath.substring(1) + "/user/((login)|(create)|(logout))$";
 
         if(Pattern.matches(pattern,url)){
             CookieUtil.removeCookie("bear");

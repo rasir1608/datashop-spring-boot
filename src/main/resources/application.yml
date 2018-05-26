@@ -5,23 +5,22 @@ jdbc:
   password: 123456
 
 
-#mybatis设置
+#mybatis
 mybatis:
   config_file: mybatis-config.xml
   mapper_path: /mapper/**.xml
   entity_package: com.datashop.domain
 
-
 server:
   port: 8888
+  context-path: /api
 spring:
   jpa:
     show-sql: true
 
 
-#安全设置security
+#security
 security:
   basic:
     enabled: false
-
 
