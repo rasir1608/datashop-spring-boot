@@ -30,4 +30,6 @@ public interface PowerMappingServer {
     DPowerMapping findById(Integer id);
 
     DPowerMapping updateById(DPowerMapping dPowerMapping);
+
+    Boolean deleteById(Integer id);
 }

@@ -9,9 +9,9 @@ public class DPowerMapping {
 
     private Integer power;
 
-    private String createTime;
+    private Long createTime;
 
-    private String updateTime;
+    private Long updateTime;
 
     public Integer getId() {
         return id;
@@ -45,20 +45,20 @@ public class DPowerMapping {
         this.power = power;
     }
 
-    public String getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime == null ? null : updateTime.trim();
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override

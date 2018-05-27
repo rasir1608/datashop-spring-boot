@@ -8,8 +8,8 @@
     <result column="password" property="password" jdbcType="CHAR" />
     <result column="headerurl" property="headerurl" jdbcType="VARCHAR" />
     <result column="role" property="role" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
-    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
   </resultMap>
   <delete id="deleteByUserId" parameterType="java.lang.Integer" >
     delete from d_user

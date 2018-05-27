@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `d_interface` (
   `response` text comment "接口返回信息",
   `project` int(11) NOT NULL comment "接口所属系统ID",
   `remark` varchar(255) comment "接口备注",
-  `create_time` varchar(20) comment "接口创建时间",
-  `update_time` varchar(20) comment "接口修改时间",
+  `create_time` bigint(20) comment "接口创建时间",
+  `update_time` bigint(20) comment "接口修改时间",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service(value = "powerServer")
+@Service
 public class PowerMappingImpl implements PowerMappingServer {
 
     @Autowired
@@ -98,6 +98,16 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             powerMapping.updateById(dPowerMapping);
             return powerMapping.findById(dPowerMapping.getId());
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
+    @Override
+    public Boolean deleteById(Integer id) {
+        try {
+            powerMapping.deleteById(id);
+            return true;
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }

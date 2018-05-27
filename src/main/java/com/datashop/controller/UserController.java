@@ -53,8 +53,8 @@ public class UserController {
             if(req.get("name") == null) user.setName((String) req.get("account"));
             else user.setName((String) req.get("name"));
             user.setRole(1);
-            user.setCreateTime(String.valueOf(new Date().getTime()));
-            user.setUpdateTime(String.valueOf(new Date().getTime()));
+            user.setCreateTime(new Date().getTime());
+            user.setUpdateTime(new Date().getTime());
             String passwordHash = bCrypt.encode((String) req.get("password"));
             user.setPassword(passwordHash);
             user = userService.saveUser(user);
@@ -85,7 +85,7 @@ public class UserController {
         if(reqName != null) reqUser.setName(reqName);
         if(reqRole != null) reqUser.setRole(reqRole);
         if(reqHeadurl != null) reqUser.setHeaderurl(reqHeadurl);
-        reqUser.setUpdateTime(String.valueOf(new Date().getTime()));
+        reqUser.setUpdateTime(new Date().getTime());
 
 
         if(userId != reqId){

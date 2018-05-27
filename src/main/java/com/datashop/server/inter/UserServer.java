@@ -9,7 +9,7 @@ import java.util.List;
  * Created by rasir on 2018/5/24.
  */
 
-public interface UserService {
+public interface UserServer {
 
     Boolean deleteById(Integer id);
 

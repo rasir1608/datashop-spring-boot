@@ -3,18 +3,17 @@ package com.datashop.server.impl;
 import com.datashop.domain.DUser;
 import com.datashop.exception.DatashopException;
 import com.datashop.mapper.DUserMapper;
-import com.datashop.server.inter.UserService;
+import com.datashop.server.inter.UserServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 
 /**
  * Created by rasir on 2018/5/24.
  */
-@Service(value = "userService")
-public class UserServiceImpl implements UserService {
+@Service
+public class UserServiceImpl implements UserServer {
 
     @Autowired
     private DUserMapper userMapper;

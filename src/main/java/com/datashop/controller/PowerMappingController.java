@@ -6,10 +6,7 @@ import com.datashop.exception.DatashopException;
 import com.datashop.server.inter.PowerMappingServer;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -32,7 +29,7 @@ public class PowerMappingController {
         reqPm.setUserId(userId);
         reqPm.setProjectId(projectId);
         reqPm.setPower(power);
-        reqPm.setUpdateTime(String.valueOf(new Date().getTime()));
+        reqPm.setUpdateTime(new Date().getTime());
         if(id == null){
             return createMapping(reqPm);
         } else {
@@ -43,7 +40,7 @@ public class PowerMappingController {
     private Map createMapping(DPowerMapping dPowerMapping){
         DPowerMapping pme = powerServer.selectByUserAndProject(dPowerMapping.getUserId(),dPowerMapping.getProjectId());
         if(pme == null) {
-            dPowerMapping.setCreateTime(String.valueOf(new Date().getTime()));
+            dPowerMapping.setCreateTime(new Date().getTime());
             return ResultUtil.handleResult(powerServer.create(dPowerMapping),"该账号与项目关系保存失败",500);
         } else {
             throw new DatashopException("该账号与项目已经存在关系",401);
@@ -61,4 +58,22 @@ public class PowerMappingController {
         }
     }
 
+    @PostMapping("/update")
+    public Map update(@RequestBody JSONObject req){
+        Integer power = req.getInteger("power");
+        Integer id = req.getInteger("id");
+        DPowerMapping pm = powerServer.findById(id);
+        if(pm != null) {
+            pm.setPower(power);
+            pm.setUpdateTime(new Date().getTime());
+            return ResultUtil.handleResult(powerServer.updateById(pm),"该账号与项目映射保存失败",500);
+        } else {
+            throw new DatashopException("该账号与项目不存在映射",404);
+        }
+    }
+
+    @GetMapping("/deleteById/{id}")
+    public Map deleteById(@PathVariable Integer id){
+        return ResultUtil.handleResult(powerServer.deleteById(id),"删除失败",500);
+    }
 }

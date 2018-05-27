@@ -13,9 +13,9 @@ public class DUser {
 
     private Integer role;
 
-    private String createTime;
+    private Long createTime;
 
-    private String updateTime;
+    private Long updateTime;
 
     public Integer getId() {
         return id;
@@ -30,7 +30,7 @@ public class DUser {
     }
 
     public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
+        this.account = account;
     }
 
     public String getName() {
@@ -38,7 +38,7 @@ public class DUser {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getPassword() {
@@ -46,7 +46,7 @@ public class DUser {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getHeaderurl() {
@@ -54,7 +54,7 @@ public class DUser {
     }
 
     public void setHeaderurl(String headerurl) {
-        this.headerurl = headerurl == null ? null : headerurl.trim();
+        this.headerurl = headerurl;
     }
 
     public Integer getRole() {
@@ -65,20 +65,20 @@ public class DUser {
         this.role = role;
     }
 
-    public String getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime == null ? null : updateTime.trim();
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override

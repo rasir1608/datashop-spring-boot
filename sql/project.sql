@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `d_project` (
   `model` varchar(255) comment "原型地址",
   `ui` varchar(255) comment "ui地址",
   `web` varchar(255) comment "页面地址",
-  `create_time` varchar(20) comment "创建时间",
-  `update_time` varchar(20) comment "修改时间",
+  `create_time` bigint(20) comment "创建时间",
+  `update_time` bigint(20) comment "修改时间",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
