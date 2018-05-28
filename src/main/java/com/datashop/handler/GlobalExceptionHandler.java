@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     private Map<String,Object> exceptionHandle(HttpServletRequest req,Exception e){
 
         for(int i = 0; i < e.getStackTrace().length ; i ++){
-            System.out.println(e.getStackTrace()[i]);
+            logger.debug(String.valueOf(e.getStackTrace()[i]));
         }
 
         if(e instanceof DatashopException){
