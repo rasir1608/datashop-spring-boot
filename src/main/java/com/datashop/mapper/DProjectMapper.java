@@ -1,16 +1,22 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DProject;
+
 import java.util.List;
+import java.util.Map;
 
 public interface DProjectMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(DProject record);
 
-    DProject selectByPrimaryKey(Integer id);
+    DProject selectById(Integer id);
 
     List<DProject> selectAll();
 
-    int updateByPrimaryKey(DProject record);
+    int updateById(DProject record);
+
+    List<DProject> page(Map map);
+
+    int total(Map map);
 }

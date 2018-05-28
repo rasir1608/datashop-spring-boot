@@ -13,7 +13,7 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_project
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -27,7 +27,7 @@
       #{ui,jdbcType=VARCHAR}, #{web,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DProject">
+  <update id="updateById" parameterType="com.datashop.domain.DProject">
     update d_project
     set name = #{name,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=INTEGER},
@@ -40,7 +40,7 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
     from d_project
     where id = #{id,jdbcType=INTEGER}
@@ -72,5 +72,27 @@
       </if>
     </where>
     order by update_time desc
+    limit #{offset},#{size}
+  </select>
+  <select id="total" resultType="int">
+    select count(*)
+    from d_project
+    <where>
+      <if test="id != null and id != ''">
+        id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        and
+        name like #{"%"+name+"%"}
+      </if>
+      <if test="creator != null and creator != ''">
+        and
+        creator = #{creator}
+      </if>
+      <if test="modifier != null and modifier != ''">
+        and
+        modifier = #{modifier}
+      </if>
+    </where>
   </select>
 </mapper>

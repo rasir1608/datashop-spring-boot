@@ -16,7 +16,7 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_interface
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -32,7 +32,7 @@
       #{project,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DInterface">
+  <update id="updateById" parameterType="com.datashop.domain.DInterface">
     update d_interface
     set name = #{name,jdbcType=VARCHAR},
       path = #{path,jdbcType=VARCHAR},
@@ -48,7 +48,7 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, path, method, content_type, creator, modifier, request, response, 
     project, remark, create_time, update_time
     from d_interface
@@ -60,5 +60,41 @@
     from d_interface
     order by id
   </select>
-
+  <select id="page" resultMap="BaseResultMap">
+    select id, name, path, method, content_type, creator, modifier, request, response,
+    project, remark, create_time, update_time
+    from d_interface
+    <where>
+      <if test="id != null and id != ''">
+        id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        and
+        name like #{"%"+name+"%"}
+      </if>
+      <if test="project != null and project != ''">
+        and
+        project = #{project}
+      </if>
+    </where>
+    order by update_time desc
+    limit #{offset},#{size}
+  </select>
+  <select id="total" resultType="int">
+    select count(*)
+    from d_interface
+    <where>
+      <if test="id != null and id != ''">
+        id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        and
+        name like #{"%"+name+"%"}
+      </if>
+      <if test="project != null and project != ''">
+        and
+        project = #{project}
+      </if>
+    </where>
+  </select>
 </mapper>
