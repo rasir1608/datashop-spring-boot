@@ -6,6 +6,7 @@ import com.datashop.domain.DUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DPowerMappingMapper {
     int deleteById(Integer id);
@@ -18,9 +19,9 @@ public interface DPowerMappingMapper {
 
     int updateById(DPowerMapping record);
 
-    List<DUser> selectUsersByProject(@Param("projectId") Integer projectId);
+    List<Map> selectUsersByProject(@Param("projectId") Integer projectId,@Param("power") Integer power);
 
-    List<DProject> selectProjectsByUser(@Param("userId") Integer userId);
+    List<Map> selectProjectsByUser(@Param("userId") Integer userId, @Param("power") Integer power);
 
     Boolean deleteByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
 
@@ -28,5 +29,5 @@ public interface DPowerMappingMapper {
 
     Boolean deleteMappingByUser(@Param("projectId") Integer projectId);
 
-    DPowerMapping selectByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
+    DPowerMapping findByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
 }

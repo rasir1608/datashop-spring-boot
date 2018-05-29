@@ -10,7 +10,9 @@ public interface DProjectMapper {
 
     int insert(DProject record);
 
-    DProject selectById(Integer id);
+    DProject findById(Integer id);
+
+    DProject findByName(String name);
 
     List<DProject> selectAll();
 

@@ -40,10 +40,15 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
     from d_project
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
+    from d_project
+    where name = #{name,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time

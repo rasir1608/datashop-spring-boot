@@ -53,15 +53,23 @@
     select  d_project.id, d_project.name,d_project.creator
     from d_project left join d_power_mapping on d_project.id = d_power_mapping.project_id
     where d_power_mapping.user_id = #{userId,jdbcType=INTEGER}
+    <if test="power != null and power != ''">
+      and
+      power = #{power,jdbcType=INTEGER}
+    </if>
     order by update_time desc;
   </select>
   <select id="selectUsersByProject" resultType="Map" >
     select  d_user.id, d_user.account, d_user.name, d_user.headerurl, d_user.role, d_user.create_time, d_user.update_time
     from d_user left join d_power_mapping on d_user.id = d_power_mapping.user_id
     where d_power_mapping.project_id = #{projectId,jdbcType=INTEGER}
+    <if test="power != null and power != ''">
+      and
+      power = #{power,jdbcType=INTEGER}
+    </if>
     order by update_time desc;
   </select>
-  <select id="selectByUserAndProject" resultMap="BaseResultMap" >
+  <select id="findByUserAndProject" resultMap="BaseResultMap" >
     select  id, user_id, project_id, power, create_time, update_time
     from d_power_mapping
     where user_id = #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}

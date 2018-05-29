@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PowerMappingImpl implements PowerMappingServer {
@@ -21,7 +22,7 @@ public class PowerMappingImpl implements PowerMappingServer {
     public DPowerMapping create(DPowerMapping dPowerMapping) {
         try {
             powerMapping.insert(dPowerMapping);
-            return powerMapping.selectByUserAndProject(dPowerMapping.getUserId(),dPowerMapping.getProjectId());
+            return powerMapping.findByUserAndProject(dPowerMapping.getUserId(),dPowerMapping.getProjectId());
         } catch (Exception e) {
 
             throw new DatashopException(e.getMessage(),500);
@@ -29,18 +30,18 @@ public class PowerMappingImpl implements PowerMappingServer {
     }
 
     @Override
-    public List<DUser> queryUsersByProject(Integer projectId) {
+    public List<Map> queryUsersByProject(Integer projectId, Integer power) {
         try {
-            return powerMapping.selectUsersByProject(projectId);
+            return powerMapping.selectUsersByProject(projectId,power);
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }
     }
 
     @Override
-    public List<DProject> queryProjectsByUser(Integer userId) {
+    public List<Map> queryProjectsByUser(Integer userId,Integer power) {
         try {
-            return powerMapping.selectProjectsByUser(userId);
+            return powerMapping.selectProjectsByUser(userId,power);
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }
@@ -78,7 +79,7 @@ public class PowerMappingImpl implements PowerMappingServer {
     @Override
     public DPowerMapping selectByUserAndProject(Integer userId,Integer projectId){
         try {
-            return powerMapping.selectByUserAndProject(userId,projectId);
+            return powerMapping.findByUserAndProject(userId,projectId);
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }

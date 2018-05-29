@@ -13,7 +13,10 @@ public interface ProjectServer {
 
     Boolean deleteById(Integer id);
 
-    List<DProject> page(Map params);
+    Map page(Map params);
 
+    DProject findByName(String name);
+
+    DProject findById(Integer id);
 
 }

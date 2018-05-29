@@ -6,6 +6,7 @@ import com.datashop.domain.DProject;
 import com.datashop.domain.DUser;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rasir on 2018/5/24.
@@ -15,9 +16,9 @@ public interface PowerMappingServer {
 
     DPowerMapping create(DPowerMapping dPowerMapping);
 
-    List<DUser> queryUsersByProject(Integer projectId);
+    List<Map> queryUsersByProject(Integer projectId,Integer power);
 
-    List<DProject> queryProjectsByUser(Integer userId);
+    List<Map> queryProjectsByUser(Integer userId,Integer power);
 
     Boolean deleteMappingByProject(Integer projectId);
 
