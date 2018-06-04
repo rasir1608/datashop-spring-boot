@@ -1,8 +1,6 @@
 package com.datashop.server.impl;
 
 import com.datashop.domain.DPowerMapping;
-import com.datashop.domain.DProject;
-import com.datashop.domain.DUser;
 import com.datashop.exception.DatashopException;
 import com.datashop.mapper.DPowerMappingMapper;
 import com.datashop.server.inter.PowerMappingServer;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PowerMappingImpl implements PowerMappingServer {
@@ -30,7 +27,7 @@ public class PowerMappingImpl implements PowerMappingServer {
     }
 
     @Override
-    public List<Map> queryUsersByProject(Integer projectId, Integer power) {
+    public List<DPowerMapping> queryUsersByProject(Integer projectId, Integer power) {
         try {
             return powerMapping.selectUsersByProject(projectId,power);
         } catch (Exception e) {
@@ -39,7 +36,7 @@ public class PowerMappingImpl implements PowerMappingServer {
     }
 
     @Override
-    public List<Map> queryProjectsByUser(Integer userId,Integer power) {
+    public List<DPowerMapping> queryProjectsByUser(Integer userId,Integer power) {
         try {
             return powerMapping.selectProjectsByUser(userId,power);
         } catch (Exception e) {

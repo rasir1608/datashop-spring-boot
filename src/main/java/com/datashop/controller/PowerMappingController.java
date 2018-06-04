@@ -76,4 +76,18 @@ public class PowerMappingController {
     public Map deleteById(@PathVariable Integer id){
         return ResultUtil.handleResult(powerServer.deleteById(id),"删除失败",500);
     }
+
+    @GetMapping("/queryByUser/{userId}")
+    public Map queryByUser(@PathVariable Integer userId){
+        return ResultUtil.handleResult(powerServer.queryProjectsByUser(userId,null),"查询错误",500);
+    }
+    @GetMapping("/queryByProject/{projectId}")
+    public Map queryByProject(@PathVariable Integer projectId){
+        return ResultUtil.handleResult(powerServer.queryUsersByProject(projectId,null),"查询错误",500);
+    }
+
+    @GetMapping("/find/{id}")
+    public Map findById(@PathVariable Integer id){
+        return ResultUtil.handleResult(powerServer.findById(id),"获取映射失败！",500);
+    }
 }

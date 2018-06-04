@@ -23,7 +23,7 @@
       ui, web, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
-      #{modifier,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
       #{ui,jdbcType=VARCHAR}, #{web,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>

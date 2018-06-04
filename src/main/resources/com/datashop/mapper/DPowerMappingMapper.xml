@@ -9,6 +9,15 @@
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="update_time" property="updateTime" jdbcType="BIGINT" />
   </resultMap>
+
+  <resultMap id="ProjectListMap" type="com.datashop.domain.PowerMapping" >
+      <id column="id" property="id" jdbcType="INTEGER" />
+      <result column="power" property="power" jdbcType="INTEGER" />
+      <result column="create_time" property="createTime" jdbcType="BIGINT" />
+      <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+      <association property="user" column="user_id" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw"/>
+      <association property="project" column="project_id" select="com.datashop.mapper.DProjectMapper.findById"/>
+  </resultMap>
   <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from d_power_mapping
     where id = #{id,jdbcType=INTEGER}
@@ -49,25 +58,25 @@
   <select id="deleteByUserAndProject" resultMap="BaseResultMap" >
     delete from d_power_mapping where user_id =  #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}
   </select>
-  <select id="selectProjectsByUser" resultType="Map" >
-    select  d_project.id, d_project.name,d_project.creator
-    from d_project left join d_power_mapping on d_project.id = d_power_mapping.project_id
-    where d_power_mapping.user_id = #{userId,jdbcType=INTEGER}
+  <select id="selectProjectsByUser" resultMap="ProjectListMap" >
+    select dpm.id, dpm.user_id, dpm.project_id, dpm.power, dpm.create_time, dpm.update_time
+    from  d_power_mapping dpm
+    where dpm.user_id = #{userId,jdbcType=INTEGER}
     <if test="power != null and power != ''">
       and
-      power = #{power,jdbcType=INTEGER}
+        dpm.power = #{power,jdbcType=INTEGER}
     </if>
-    order by update_time desc;
+    order by dpm.update_time desc;
   </select>
-  <select id="selectUsersByProject" resultType="Map" >
-    select  d_user.id, d_user.account, d_user.name, d_user.headerurl, d_user.role, d_user.create_time, d_user.update_time
-    from d_user left join d_power_mapping on d_user.id = d_power_mapping.user_id
-    where d_power_mapping.project_id = #{projectId,jdbcType=INTEGER}
+  <select id="selectUsersByProject" resultMap="ProjectListMap">
+      select dpm.id, dpm.user_id, dpm.project_id, dpm.power, dpm.create_time, dpm.update_time
+      from  d_power_mapping dpm
+      where dpm.project_id = #{projectId,jdbcType=INTEGER}
     <if test="power != null and power != ''">
       and
       power = #{power,jdbcType=INTEGER}
     </if>
-    order by update_time desc;
+    order by dpm.update_time desc;
   </select>
   <select id="findByUserAndProject" resultMap="BaseResultMap" >
     select  id, user_id, project_id, power, create_time, update_time

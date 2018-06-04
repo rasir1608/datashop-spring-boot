@@ -24,6 +24,7 @@ public class projectController {
     @Autowired
     private ProjectServer projectServer;
 
+    @PostMapping("/save")
     public Map save(@RequestBody DProject dProject){
         if(dProject.getId() == null){
             return create(dProject);
@@ -46,9 +47,11 @@ public class projectController {
         DProject exit = projectServer.findById(dProject.getId());
         if(exit == null) {
             throw new DatashopException("要更新的项目不存在！",404);
+        } else if(!dProject.getName().equals(exit.getName())){
+            throw new DatashopException("暂不支持修改项目名称，请确认后再保存！",401);
         } else {
             dProject.setUpdateTime(new Date().getTime());
-            return ResultUtil.handleResult(projectServer.create(dProject),"项目信息保存失败！",500);
+            return ResultUtil.handleResult(projectServer.update(dProject),"项目信息保存失败！",500);
         }
     }
 

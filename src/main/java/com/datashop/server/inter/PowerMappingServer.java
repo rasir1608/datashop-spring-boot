@@ -2,11 +2,8 @@ package com.datashop.server.inter;
 
 
 import com.datashop.domain.DPowerMapping;
-import com.datashop.domain.DProject;
-import com.datashop.domain.DUser;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rasir on 2018/5/24.
@@ -16,9 +13,9 @@ public interface PowerMappingServer {
 
     DPowerMapping create(DPowerMapping dPowerMapping);
 
-    List<Map> queryUsersByProject(Integer projectId,Integer power);
+    List<DPowerMapping> queryUsersByProject(Integer projectId,Integer power);
 
-    List<Map> queryProjectsByUser(Integer userId,Integer power);
+    List<DPowerMapping> queryProjectsByUser(Integer userId,Integer power);
 
     Boolean deleteMappingByProject(Integer projectId);
 

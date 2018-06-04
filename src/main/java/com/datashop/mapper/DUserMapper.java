@@ -9,7 +9,7 @@ public interface DUserMapper {
 
     int insert(DUser record);
 
-    DUser findById(Integer id);
+    DUser findById(Integer userId);
 
     List<DUser> selectAll();
 
