@@ -8,6 +8,8 @@
     <result column="power" property="power" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <association property="user" column="user_id" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw"/>
+    <association property="project" column="project_id" select="com.datashop.mapper.DProjectMapper.findById"/>
   </resultMap>
 
   <resultMap id="ProjectListMap" type="com.datashop.domain.PowerMapping" >
@@ -58,7 +60,7 @@
   <select id="deleteByUserAndProject" resultMap="BaseResultMap" >
     delete from d_power_mapping where user_id =  #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}
   </select>
-  <select id="selectProjectsByUser" resultMap="ProjectListMap" >
+  <select id="selectProjectsByUser" resultMap="BaseResultMap" >
     select dpm.id, dpm.user_id, dpm.project_id, dpm.power, dpm.create_time, dpm.update_time
     from  d_power_mapping dpm
     where dpm.user_id = #{userId,jdbcType=INTEGER}
@@ -68,7 +70,7 @@
     </if>
     order by dpm.update_time desc;
   </select>
-  <select id="selectUsersByProject" resultMap="ProjectListMap">
+  <select id="selectUsersByProject" resultMap="BaseResultMap">
       select dpm.id, dpm.user_id, dpm.project_id, dpm.power, dpm.create_time, dpm.update_time
       from  d_power_mapping dpm
       where dpm.project_id = #{projectId,jdbcType=INTEGER}
