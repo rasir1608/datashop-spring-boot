@@ -4,6 +4,7 @@ import com.datashop.domain.DPowerMapping;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DPowerMappingMapper {
     int deleteById(Integer id);
@@ -27,4 +28,7 @@ public interface DPowerMappingMapper {
     Boolean deleteMappingByUser(@Param("projectId") Integer projectId);
 
     DPowerMapping findByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
+
+    List<Map> queryAllMyApplingProjectList(@Param("userId") Integer userId);
+
 }

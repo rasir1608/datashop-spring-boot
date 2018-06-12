@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.datashop.domain.DPowerMapping;
 import com.datashop.exception.DatashopException;
 import com.datashop.server.inter.PowerMappingServer;
+import com.datashop.utils.CookieUtil;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/powerMapping")
+@RequestMapping("/dpower")
 public class PowerMappingController {
 
     @Autowired
@@ -89,5 +90,13 @@ public class PowerMappingController {
     @GetMapping("/find/{id}")
     public Map findById(@PathVariable Integer id){
         return ResultUtil.handleResult(powerServer.findById(id),"获取映射失败！",500);
+    }
+
+    @GetMapping("/myApplying")
+    public Map getMyApplyingProject(){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        System.out.println(userId);
+        return ResultUtil.handleResult(powerServer.queryAllMyApplingProjectList(userId),"获取项目列表失败",500);
     }
 }

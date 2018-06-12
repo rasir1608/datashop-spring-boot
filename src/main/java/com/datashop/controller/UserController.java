@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by rasir on 2018/5/24.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/duser")
 public class UserController {
 
     @Autowired
@@ -39,6 +39,7 @@ public class UserController {
         }
     }
 
+//    注册帐号
     @PostMapping("/create")
     @Transactional
     public Map create(@RequestBody JSONObject req){
@@ -104,6 +105,7 @@ public class UserController {
         }
     }
 
+//    登录
     @PostMapping("/login")
     public Map login(@RequestBody JSONObject req){
         if(req.get("account") == null || req.get("password") == null) {
@@ -126,12 +128,13 @@ public class UserController {
         }
     }
 
+//    注销帐号
     @GetMapping("/logout")
     public Map logout(){
         return ResultUtil.success("帐号注销成功！");
     }
-
-    @GetMapping("/info")
+//    获取当前用户信息
+    @GetMapping("/getUser")
     public Map getCurrentUser(){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
         Integer userId = new Integer((String) cookie.get("userId"));
@@ -144,11 +147,13 @@ public class UserController {
         }
     }
 
+//    通过名称查找用户信息
     @GetMapping("/queryByName/{name}")
     public Map queryByName(@PathVariable String name){
         return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",404);
     }
 
+//    查询所有用户信息
     @GetMapping("/queryAll")
     public Map queryAll(){
         return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);

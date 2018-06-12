@@ -85,4 +85,13 @@
     from d_power_mapping
     where user_id = #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}
   </select>
+  <select id="queryAllMyApplingProjectList" resultType="Map">
+
+
+  SELECT dpm.id,dpm.user_id,dpm.power,dpm.project_id,dpm.create_time,dpm.update_time,
+  dp.name AS project_name,dp.creator AS project_creator,du.name AS project_creator_name,
+  FROM (d_power_mapping AS dpm INNER JOIN d_project AS dp ON dpm.project_id = dp.id)
+  LEFT JOIN (SELECT id,name FROM d_user) AS du ON du.id = dp.creator WHERE dpm.user_id = #{userId,jdbcType=INTEGER};
+
+  </select>
 </mapper>

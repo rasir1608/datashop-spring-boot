@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PowerMappingImpl implements PowerMappingServer {
@@ -106,6 +107,15 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             powerMapping.deleteById(id);
             return true;
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
+    @Override
+    public List<Map> queryAllMyApplingProjectList(Integer userId) {
+        try {
+            return powerMapping.queryAllMyApplingProjectList(userId);
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }

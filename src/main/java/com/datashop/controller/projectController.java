@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by rasir on 2018/5/29.
  */
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/dproject")
 public class projectController {
 
     @Autowired

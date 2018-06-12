@@ -2,8 +2,10 @@ package com.datashop.server.inter;
 
 
 import com.datashop.domain.DPowerMapping;
+import com.datashop.domain.DProject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rasir on 2018/5/24.
@@ -30,4 +32,6 @@ public interface PowerMappingServer {
     DPowerMapping updateById(DPowerMapping dPowerMapping);
 
     Boolean deleteById(Integer id);
+
+    List<Map> queryAllMyApplingProjectList(Integer userId);
 }

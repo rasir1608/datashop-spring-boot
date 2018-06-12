@@ -39,8 +39,7 @@ public class HttpAspect {
 
         String url = request.getRequestURI();
 
-        String pattern = contextPath.substring(1) + "/user/((login)|(create)|(logout))$";
-
+        String pattern = contextPath.substring(1) + "/duser/((login)|(create)|(logout))$";
         if(Pattern.matches(pattern,url)){
             CookieUtil.removeCookie("bear");
         } else {

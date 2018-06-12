@@ -13,7 +13,7 @@ mybatis:
 
 server:
   port: 8888
-  context-path: /api
+  context-path: /dataapi
 spring:
   jpa:
     show-sql: true
