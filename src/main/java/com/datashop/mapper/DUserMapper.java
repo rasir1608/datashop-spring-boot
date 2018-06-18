@@ -1,6 +1,7 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface DUserMapper {
     DUser getUser(DUser user);
 
     List<DUser> selectUserByName(String name);
+
 }

@@ -100,4 +100,13 @@
       </if>
     </where>
   </select>
+
+  <select id="queryDetail" resultType="Map">
+    SELECT dp.id , dp.name,dp.creator,dp.model,dp.ui,dp.web,
+    du.name AS creatorName,dp.create_time AS createTime,dp.update_time AS updateTime
+    FROM d_project dp
+    LEFT JOIN d_user du ON dp.creator = du.id
+    WHERE dp.id = #{projectId,jdbcType=INTEGER};
+  </select>
+
 </mapper>

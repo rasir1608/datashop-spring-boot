@@ -86,12 +86,33 @@
     where user_id = #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}
   </select>
   <select id="queryAllMyApplingProjectList" resultType="Map">
+   SELECT dpm.id,dpm.user_id as usrId,dpm.power,dpm.project_id as projectId,
+   dpm.create_time as createTime,dpm.update_time as updateTime,
+   dp.name as projectName,dp.creator as projectCreator,du.name as projectCreatorName
+  FROM d_power_mapping dpm LEFT JOIN d_project dp ON dpm.project_id = dp.id LEFT JOIN d_user du ON dp.creator = du.id
+  where dpm.user_id =  #{userId,jdbcType=INTEGER} and dpm.power = 0 or dpm.power = 2;
 
+  </select>
 
-  SELECT dpm.id,dpm.user_id,dpm.power,dpm.project_id,dpm.create_time,dpm.update_time,
-  dp.name AS project_name,dp.creator AS project_creator,du.name AS project_creator_name,
-  FROM (d_power_mapping AS dpm INNER JOIN d_project AS dp ON dpm.project_id = dp.id)
-  LEFT JOIN (SELECT id,name FROM d_user) AS du ON du.id = dp.creator WHERE dpm.user_id = #{userId,jdbcType=INTEGER};
+  <select id="queryAllApplyMineMappingList" resultType="Map">
+    SELECT dpm.id,dpm.user_id,dpm.power,dpm.project_id as projectId,dpm.create_time as createTime,
+  dpm.update_time as updateTime,dp.name as projectName,dp.creator as projectCreator,du.name as userName
+    FROM d_power_mapping dpm LEFT JOIN d_project  dp ON dpm.project_id = dp.id LEFT JOIN d_user du ON dpm.user_id = du.id
+  where dp.creator = 10001 and dpm.power = 0 ;
+  </select>
 
+  <select id="getProjectUserList" resultType="Map">
+    SELECT du.id AS userId,du.name AS userName,dp.id AS projectId,dp.name AS projectName,dpm.power
+    FROM d_power_mapping dpm RIGHT JOIN d_user du ON dpm.user_id = du.id LEFT JOIN d_project dp ON dpm.project_id = dp.id
+    WHERE dpm.project_id = #{projectId,jdbcType=INTEGER} and power = 1;
+  </select>
+
+  <select id="getMyProjects" resultType="Map">
+    SELECT dp.id AS projectId, dp.name AS projectName,dp.creator,dp.model,dp.ui,dp.web,
+    du.name AS creatorName,dp.create_time AS createTime,dp.update_time AS updateTime
+    FROM d_power_mapping dpm
+    LEFT JOIN d_project dp ON dpm.project_id = dp.id
+    LEFT JOIN d_user du ON dp.creator = du.id
+    WHERE dpm.user_id = #{userId,jdbcType=INTEGER}  AND power = 1;
   </select>
 </mapper>

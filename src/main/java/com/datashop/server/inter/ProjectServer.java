@@ -19,4 +19,5 @@ public interface ProjectServer {
 
     DProject findById(Integer id);
 
+    Map queryDetail(Integer projectId);
 }

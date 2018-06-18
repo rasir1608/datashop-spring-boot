@@ -22,4 +22,5 @@ public interface DProjectMapper {
 
     int total(Map map);
 
+    Map queryDetail(Integer projectId);
 }

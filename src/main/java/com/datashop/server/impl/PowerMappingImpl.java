@@ -121,5 +121,32 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Override
+    public List<Map> queryAllApplyMineMappingList(Integer userId) {
+        try {
+            return powerMapping.queryAllApplyMineMappingList(userId);
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
+    @Override
+    public List<Map> getProjectUserList(Integer projectId) {
+        try {
+            return powerMapping.getProjectUserList(projectId);
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
+    @Override
+    public List<Map> getMyProjects(Integer userId) {
+        try {
+            return powerMapping.getMyProjects(userId);
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
 
 }

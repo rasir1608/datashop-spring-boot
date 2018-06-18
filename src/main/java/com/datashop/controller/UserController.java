@@ -64,7 +64,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @Transactional
     public Map update(@RequestBody JSONObject req){
         Map cookie = CookieUtil.getCookie("bear",Map.class);
@@ -158,5 +158,33 @@ public class UserController {
     public Map queryAll(){
         return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);
     }
+
+//    修改昵称
+    @GetMapping("/updateName/{newName}")
+    public Map changeName(@PathVariable String newName){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        DUser user = userService.getUserById(userId);
+        user.setName(newName);
+        return ResultUtil.handleResult(userService.updateById(user),"昵称修改失败！",500);
+    }
+
+//    修改密码
+    @PostMapping("/updatePasswrod")
+    public Map updatePassword(@RequestBody JSONObject req){
+        String oldP = req.getString("oldPassword");
+        String newP = req.getString("newPassword");
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        DUser user = userService.getUserById(userId);
+        if(bCrypt.matches(oldP,user.getPassword())){
+            user.setPassword(bCrypt.encode(newP));
+            return ResultUtil.handleResult(userService.updateById(user),"密码修改失败！",500);
+        } else {
+            throw new DatashopException("原密码输入有误，请重新输入",404);
+        }
+    }
+
+//    上传头像
 
 }

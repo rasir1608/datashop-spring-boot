@@ -8,6 +8,7 @@ import com.datashop.utils.CookieUtil;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sun.plugin2.main.server.ResultHandler;
 
 import java.util.Date;
 import java.util.Map;
@@ -96,7 +97,92 @@ public class PowerMappingController {
     public Map getMyApplyingProject(){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
         Integer userId = new Integer((String) cookie.get("userId"));
-        System.out.println(userId);
         return ResultUtil.handleResult(powerServer.queryAllMyApplingProjectList(userId),"获取项目列表失败",500);
+    }
+
+    @GetMapping("/applyMine")
+    public Map getApplyingMineMapping(){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        return ResultUtil.handleResult(powerServer.queryAllApplyMineMappingList(userId),"获取项目列表失败",500);
+    }
+
+    @GetMapping("/delete/{powerId}")
+    public Map deleteMapping(@PathVariable Integer powerId){
+        return ResultUtil.handleResult(powerServer.deleteById(powerId),"删除失败！",500);
+    }
+
+    @GetMapping("/dismiss/{powerId}")
+    public Map dismissApplying(@PathVariable Integer powerId){
+        DPowerMapping dpm = powerServer.findById(powerId);
+        if(dpm != null) {
+            dpm.setPower(2);
+            dpm.setUpdateTime(new Date().getTime());
+            return ResultUtil.handleResult(powerServer.updateById(dpm),"申请驳回失败！",500);
+        } else {
+            throw new DatashopException("申请驳回失败！",404);
+        }
+    }
+
+    @GetMapping("/create/{projectId}")
+    public Map createMapping(@PathVariable Integer projectId){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        DPowerMapping newDpm = new DPowerMapping();
+        newDpm.setPower(0);
+        newDpm.setUserId(userId);
+        newDpm.setProjectId(projectId);
+        newDpm.setCreateTime(new Date().getTime());
+        newDpm.setUpdateTime(new Date().getTime());
+        DPowerMapping dpm = powerServer.selectByUserAndProject(userId,projectId);
+        if(dpm != null){
+            if(dpm.getPower() == 2) {
+             powerServer.deleteById(dpm.getId());
+             return ResultUtil.handleResult(powerServer.create(newDpm),"申请项目失败！",500);
+            } else {
+                throw new DatashopException("请不要重复申请同一个项目",401);
+            }
+        } else {
+            return ResultUtil.handleResult(powerServer.create(newDpm),"申请项目失败！",500);
+        }
+    }
+
+    @PostMapping("/addUser")
+    public Map addUser(@RequestBody JSONObject mapping){
+        DPowerMapping dpm = new DPowerMapping();
+        dpm.setUserId((Integer) mapping.get("userId"));
+        dpm.setProjectId((Integer) mapping.get("projectId"));
+        dpm.setPower(1);
+        dpm.setCreateTime(new Date().getTime());
+        dpm.setUpdateTime(new Date().getTime());
+        DPowerMapping d = powerServer.selectByUserAndProject(dpm.getUserId(),dpm.getProjectId());
+        if(d == null) {
+            return ResultUtil.handleResult(powerServer.create(dpm),"项目增加用户失败！",500);
+        } else {
+            if(d.getPower() == 0) {
+                d.setPower(1);
+                d.setUpdateTime(new Date().getTime());
+                return ResultUtil.handleResult(powerServer.updateById(d),"项目增加用户失败！",500);
+            } else if(d.getPower() == 1) {
+                throw new DatashopException("用户已可使用项目，无需再次添加",401);
+            } else {
+                throw new DatashopException("用户已在申请列表中",401);
+            }
+        }
+    }
+
+    @GetMapping("/userList/{projectId}")
+    public Map getProjectUserList(@PathVariable Integer projectId){
+        return ResultUtil.handleResult(powerServer.getProjectUserList(projectId),"未获取到该项目下的用户列表",500);
+    }
+
+    /**
+     * 查询我有权限的项目
+     */
+    @GetMapping("/myProjects")
+    public Map getMyProjects(){
+        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        return ResultUtil.handleResult(powerServer.getMyProjects(userId),"未获取到项目列表",500);
     }
 }

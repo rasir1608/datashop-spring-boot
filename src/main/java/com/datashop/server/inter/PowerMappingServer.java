@@ -34,4 +34,10 @@ public interface PowerMappingServer {
     Boolean deleteById(Integer id);
 
     List<Map> queryAllMyApplingProjectList(Integer userId);
+
+    List<Map> queryAllApplyMineMappingList(Integer userId);
+
+    List<Map> getProjectUserList(Integer projectId);
+
+    List<Map> getMyProjects(Integer userId);
 }

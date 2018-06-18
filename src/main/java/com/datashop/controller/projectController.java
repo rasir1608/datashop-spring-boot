@@ -6,10 +6,8 @@ import com.datashop.exception.DatashopException;
 import com.datashop.server.inter.ProjectServer;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.method.P;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -60,5 +58,20 @@ public class projectController {
         return ResultUtil.handleResult(projectServer.page(req),"项目的分页信息获取失败",500);
     }
 
+    /**
+     * 删除项目
+     */
+    @GetMapping("/delete/{projectId}")
+    public Map deleteProjectById(@PathVariable Integer projectId){
+        return ResultUtil.handleResult(projectServer.deleteById(projectId),"项目删除失败",500);
+    }
+
+    /**
+     * 获取项目详情
+     */
+    @GetMapping("/detail/{projectId}")
+    public Map getProjectDetail(@PathVariable Integer projectId){
+        return ResultUtil.handleResult(projectServer.queryDetail(projectId),"未找到项目",500);
+    }
 
 }

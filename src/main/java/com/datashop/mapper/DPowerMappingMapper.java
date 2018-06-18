@@ -31,4 +31,10 @@ public interface DPowerMappingMapper {
 
     List<Map> queryAllMyApplingProjectList(@Param("userId") Integer userId);
 
+    List<Map> queryAllApplyMineMappingList(@Param("userId") Integer userId);
+
+    List<Map> getProjectUserList(@Param("projectId") Integer projectId);
+
+    List<Map> getMyProjects(@Param("userId") Integer userId);
+
 }

@@ -28,4 +28,5 @@ public interface UserServer {
     DUser getUserByAccount(String account);
 
     List<DUser> getUserListByName(String name);
+
 }

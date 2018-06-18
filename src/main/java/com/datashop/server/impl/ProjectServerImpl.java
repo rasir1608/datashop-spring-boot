@@ -82,4 +82,13 @@ public class ProjectServerImpl implements ProjectServer {
             throw new DatashopException(e.getMessage(),500);
         }
     }
+
+    @Override
+    public Map queryDetail(Integer projectId) {
+        try{
+            return projectMapper.queryDetail(projectId);
+        } catch (Exception e) {
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
 }
