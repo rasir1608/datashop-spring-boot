@@ -1,84 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.datashop.mapper.DPowerMappingMapper">
-  <resultMap id="BaseResultMap" type="com.datashop.domain.DPowerMapping">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="CHAR" property="userId" />
-    <result column="project_id" jdbcType="CHAR" property="projectId" />
-    <result column="power" jdbcType="INTEGER" property="power" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from d_power_mapping
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.datashop.domain.DPowerMapping">
-    insert into d_power_mapping (id, user_id, project_id, 
-      power, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=CHAR}, #{projectId,jdbcType=CHAR}, 
-      #{power,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DPowerMapping">
-    update d_power_mapping
-    set user_id = #{userId,jdbcType=CHAR},
-      project_id = #{projectId,jdbcType=CHAR},
-      power = #{power,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, project_id, power, create_time, update_time
-    from d_power_mapping
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, project_id, power, create_time, update_time
-    from d_power_mapping
-    order by id
-  </select>
-  <resultMap id="BaseResultMap" type="com.datashop.domain.DPowerMapping">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="CHAR" property="userId" />
-    <result column="project_id" jdbcType="CHAR" property="projectId" />
-    <result column="power" jdbcType="INTEGER" property="power" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from d_power_mapping
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.datashop.domain.DPowerMapping">
-    insert into d_power_mapping (id, user_id, project_id, 
-      power, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=CHAR}, #{projectId,jdbcType=CHAR}, 
-      #{power,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DPowerMapping">
-    update d_power_mapping
-    set user_id = #{userId,jdbcType=CHAR},
-      project_id = #{projectId,jdbcType=CHAR},
-      power = #{power,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, project_id, power, create_time, update_time
-    from d_power_mapping
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, project_id, power, create_time, update_time
-    from d_power_mapping
-    order by id
-  </select>
+
+
+
   <resultMap id="BaseResultMap" type="com.datashop.domain.DPowerMapping">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
@@ -98,10 +23,33 @@
       <association column="user_id" property="user" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw" />
       <association column="project_id" property="project" select="com.datashop.mapper.DProjectMapper.findById" />
   </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from d_power_mapping
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DPowerMapping">
+    update d_power_mapping
+    set user_id = #{userId,jdbcType=CHAR},
+    project_id = #{projectId,jdbcType=CHAR},
+    power = #{power,jdbcType=INTEGER},
+    create_time = #{createTime,jdbcType=VARCHAR},
+    update_time = #{updateTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, project_id, power, create_time, update_time
+    from d_power_mapping
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_power_mapping
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.datashop.domain.DPowerMapping">
     insert into d_power_mapping (id, user_id, project_id, 
       power, create_time, update_time

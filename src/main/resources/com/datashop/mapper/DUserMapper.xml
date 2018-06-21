@@ -1,92 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.datashop.mapper.DUserMapper">
-  <resultMap id="BaseResultMap" type="com.datashop.domain.DUser">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="account" jdbcType="CHAR" property="account" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="password" jdbcType="CHAR" property="password" />
-    <result column="headerurl" jdbcType="VARCHAR" property="headerurl" />
-    <result column="role" jdbcType="INTEGER" property="role" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from d_user
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.datashop.domain.DUser">
-    insert into d_user (id, account, name, 
-      password, headerurl, role, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{password,jdbcType=CHAR}, #{headerurl,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DUser">
-    update d_user
-    set account = #{account,jdbcType=CHAR},
-      name = #{name,jdbcType=CHAR},
-      password = #{password,jdbcType=CHAR},
-      headerurl = #{headerurl,jdbcType=VARCHAR},
-      role = #{role,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, account, name, password, headerurl, role, create_time, update_time
-    from d_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, account, name, password, headerurl, role, create_time, update_time
-    from d_user
-    order by id
-  </select>
-  <resultMap id="BaseResultMap" type="com.datashop.domain.DUser">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="account" jdbcType="CHAR" property="account" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="password" jdbcType="CHAR" property="password" />
-    <result column="headerurl" jdbcType="VARCHAR" property="headerurl" />
-    <result column="role" jdbcType="INTEGER" property="role" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from d_user
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.datashop.domain.DUser">
-    insert into d_user (id, account, name, 
-      password, headerurl, role, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{password,jdbcType=CHAR}, #{headerurl,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DUser">
-    update d_user
-    set account = #{account,jdbcType=CHAR},
-      name = #{name,jdbcType=CHAR},
-      password = #{password,jdbcType=CHAR},
-      headerurl = #{headerurl,jdbcType=VARCHAR},
-      role = #{role,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, account, name, password, headerurl, role, create_time, update_time
-    from d_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, account, name, password, headerurl, role, create_time, update_time
-    from d_user
-    order by id
-  </select>
+
+
+
   <resultMap id="BaseResultMap" type="com.datashop.domain.DUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="account" jdbcType="CHAR" property="account" />
@@ -97,6 +14,28 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from d_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DUser">
+    update d_user
+    set account = #{account,jdbcType=CHAR},
+    name = #{name,jdbcType=CHAR},
+    password = #{password,jdbcType=CHAR},
+    headerurl = #{headerurl,jdbcType=VARCHAR},
+    role = #{role,jdbcType=INTEGER},
+    create_time = #{createTime,jdbcType=VARCHAR},
+    update_time = #{updateTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, account, name, password, headerurl, role, create_time, update_time
+    from d_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByUserId" parameterType="java.lang.Integer">
     delete from d_user
     where id = #{id,jdbcType=INTEGER}
