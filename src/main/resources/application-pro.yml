@@ -1,0 +1,16 @@
+jdbc:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/datashop?useUnicode=true
+  userName: root
+  password: 123456
+
+
+server:
+  port: 8090
+  context-path: /dataapi
+
+#filePath
+file:
+  base-path: /app/nginx/html
+  static-path: /static
+

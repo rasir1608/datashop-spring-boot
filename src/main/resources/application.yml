@@ -1,9 +1,3 @@
-jdbc:
-  driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://127.0.0.1:3306/datashop?useUnicode=true
-  userName: root
-  password: 123456
-
 
 #mybatis
 mybatis:
@@ -11,21 +5,13 @@ mybatis:
   mapper_path: /mapper/**.xml
   entity_package: com.datashop.domain
 
-server:
-  port: 8888
-  context-path: /dataapi
 spring:
   jpa:
     show-sql: true
-
+  profiles:
+    active: dev
 
 #security
 security:
   basic:
     enabled: false
-
-#filePath
-file:
-  base-path: D:/work/git/inc-bdp-etl-dataetlweb
-  static-path: /static
-
