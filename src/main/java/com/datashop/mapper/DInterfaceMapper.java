@@ -2,6 +2,7 @@ package com.datashop.mapper;
 
 import com.datashop.domain.DInterface;
 import java.util.List;
+import java.util.Map;
 
 public interface DInterfaceMapper {
     int deleteByPrimaryKey(Integer id);
@@ -13,4 +14,16 @@ public interface DInterfaceMapper {
     List<DInterface> selectAll();
 
     int updateByPrimaryKey(DInterface record);
+
+    int updateById(DInterface record);
+
+    DInterface findByName(String name);
+
+    DInterface findById(Integer id);
+
+    int deleteById(Integer id);
+
+    List<DInterface> page(Map map);
+
+    Integer total(Map map);
 }
