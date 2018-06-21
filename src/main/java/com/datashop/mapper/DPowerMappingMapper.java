@@ -1,40 +1,43 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DPowerMapping;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 import java.util.Map;
 
 public interface DPowerMappingMapper {
-    int deleteById(Integer id);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(DPowerMapping record);
 
-    DPowerMapping findById(Integer id);
+    DPowerMapping selectByPrimaryKey(Integer id);
 
     List<DPowerMapping> selectAll();
 
-    int updateById(DPowerMapping record);
+    int updateByPrimaryKey(DPowerMapping record);
 
-    List<DPowerMapping> selectUsersByProject(@Param("projectId") Integer projectId,@Param("power") Integer power);
+    DPowerMapping findByUserAndProject(Integer userId, Integer projectId);
 
-    List<DPowerMapping> selectProjectsByUser(@Param("userId") Integer userId, @Param("power") Integer power);
+    List<DPowerMapping> selectUsersByProject(Integer projectId, Integer power);
 
-    Boolean deleteByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
+    List<DPowerMapping> selectProjectsByUser(Integer userId, Integer power);
 
-    Boolean deleteMappingByProject(@Param("userId") Integer userId);
+    int deleteMappingByProject(Integer projectId);
 
-    Boolean deleteMappingByUser(@Param("projectId") Integer projectId);
+    int deleteMappingByUser(Integer userId);
 
-    DPowerMapping findByUserAndProject(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
+    int deleteByUserAndProject(Integer userId, Integer projectId);
 
-    List<Map> queryAllMyApplingProjectList(@Param("userId") Integer userId);
+    DPowerMapping findById(Integer id);
 
-    List<Map> queryAllApplyMineMappingList(@Param("userId") Integer userId);
+    int updateById(DPowerMapping dPowerMapping);
 
-    List<Map> getProjectUserList(@Param("projectId") Integer projectId);
+    int deleteById(Integer id);
 
-    List<Map> getMyProjects(@Param("userId") Integer userId);
+    List<Map> queryAllMyApplingProjectList(Integer userId);
 
+    List<Map> queryAllApplyMineMappingList(Integer userId);
+
+    List<Map> getProjectUserList(Integer projectId);
+
+    List<Map> getMyProjects(Integer userId);
 }

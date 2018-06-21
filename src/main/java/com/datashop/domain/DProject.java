@@ -7,7 +7,7 @@ public class DProject {
 
     private Integer creator;
 
-    private Integer modifier;
+    private String modifier;
 
     private String remarks;
 
@@ -45,12 +45,12 @@ public class DProject {
         this.creator = creator;
     }
 
-    public Integer getModifier() {
+    public String getModifier() {
         return modifier;
     }
 
-    public void setModifier(Integer modifier) {
-        this.modifier = modifier;
+    public void setModifier(String modifier) {
+        this.modifier = modifier == null ? null : modifier.trim();
     }
 
     public String getRemarks() {
@@ -98,7 +98,7 @@ public class DProject {
     }
 
     public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
+        this.updateTime = updateTime ;
     }
 
     @Override

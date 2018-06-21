@@ -6,15 +6,19 @@ import com.datashop.domain.DUser;
 import com.datashop.exception.DatashopException;
 import com.datashop.server.impl.UserServiceImpl;
 import com.datashop.utils.CookieUtil;
+import com.datashop.utils.FileHandler;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.InputStream;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by rasir on 2018/5/24.
@@ -39,7 +43,11 @@ public class UserController {
         }
     }
 
-//    注册帐号
+    /**
+     * 注册帐号
+     * @param req
+     * @return
+     */
     @PostMapping("/create")
     @Transactional
     public Map create(@RequestBody JSONObject req){
@@ -105,7 +113,11 @@ public class UserController {
         }
     }
 
-//    登录
+    /**
+     * 登录
+     * @param req
+     * @return
+     */
     @PostMapping("/login")
     public Map login(@RequestBody JSONObject req){
         if(req.get("account") == null || req.get("password") == null) {
@@ -128,12 +140,19 @@ public class UserController {
         }
     }
 
-//    注销帐号
+    /**
+     * 注销登录
+     * @return
+     */
     @GetMapping("/logout")
     public Map logout(){
         return ResultUtil.success("帐号注销成功！");
     }
-//    获取当前用户信息
+
+    /**
+     * 获取当前用户信息
+     * @return
+     */
     @GetMapping("/getUser")
     public Map getCurrentUser(){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
@@ -148,7 +167,7 @@ public class UserController {
     }
 
 //    通过名称查找用户信息
-    @GetMapping("/queryByName/{name}")
+    @GetMapping("/findByName/{name}")
     public Map queryByName(@PathVariable String name){
         return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",404);
     }
@@ -159,7 +178,11 @@ public class UserController {
         return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);
     }
 
-//    修改昵称
+    /**
+     * 修改昵称
+     * @param newName
+     * @return
+     */
     @GetMapping("/updateName/{newName}")
     public Map changeName(@PathVariable String newName){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
@@ -169,7 +192,11 @@ public class UserController {
         return ResultUtil.handleResult(userService.updateById(user),"昵称修改失败！",500);
     }
 
-//    修改密码
+    /**
+     * 修改密码
+     * @param req
+     * @return
+     */
     @PostMapping("/updatePasswrod")
     public Map updatePassword(@RequestBody JSONObject req){
         String oldP = req.getString("oldPassword");
@@ -185,6 +212,59 @@ public class UserController {
         }
     }
 
-//    上传头像
+    /**
+     * 上传用户头像
+     * @param multipartFile
+     * @param fileName
+     * @return
+     */
+    @PostMapping("/upload")
+    public Map uploadUserHeader(@RequestParam("file") MultipartFile multipartFile, @RequestParam("fileName")String fileName){
+        if(multipartFile.isEmpty()){
+            throw new DatashopException("未获取到图片",401);
+        } else if(multipartFile.getSize() > 2097152){
+            throw new DatashopException("请选择小于2MB的图片",401);
+        }
+        try{
+            String contentType = multipartFile.getContentType();
+            if(Pattern.matches("^image/\\w+",contentType)){
+                DUser user = getUserInfo();
+                String oldHeader = user.getHeaderurl();
+                if(oldHeader != null){
+                    FileHandler.removeFile(oldHeader);
+                }
+                String[] fileNameParts = multipartFile.getOriginalFilename().split("\\.");
+                String fileSuffix = fileNameParts[(fileNameParts.length-1)];
+                List<String> suffixArray = Arrays.asList("png","jpg","gif");
+                if(!suffixArray.contains(fileSuffix)){
+                    throw new DatashopException("请上传png、jpg、gif类型的文件！",401);
+                } else{
+                    String dirName ="/image";
+                    String newFileName = user.getAccount() + "--" + "header"+new Date().getTime()+"."+fileSuffix;
+                    String filePath = FileHandler.saveFile(multipartFile.getInputStream(),newFileName,dirName);
+                    user.setHeaderurl(filePath);
+                    user.setUpdateTime(new Date().getTime());
+                    userService.updateById(user);
+                    return ResultUtil.success(filePath);
+                }
+            } else {
+                throw new DatashopException("请不要上传图片以外的文件",401);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
+
+    private DUser getUserInfo(){
+        Map cookie = CookieUtil.getCookie("bear",Map.class);
+        Integer userId = new Integer((String) cookie.get("userId"));
+        DUser user = userService.getUserById(userId);
+        if(user != null) {
+            return user;
+        } else {
+            throw new DatashopException("登录信息有误",500);
+        }
+    }
 
 }

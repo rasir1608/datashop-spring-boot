@@ -5,34 +5,13 @@ public class DPowerMapping {
 
     private Integer userId;
 
-    private DUser user;
-
     private Integer projectId;
-
-    private DProject project;
 
     private Integer power;
 
     private Long createTime;
 
     private Long updateTime;
-
-    public DUser getUser() {
-        return user;
-    }
-
-    public void setUser(DUser user) {
-        this.user = user;
-    }
-
-    public DProject getProject() {
-        return project;
-    }
-
-    public void setProject(DProject project) {
-        this.project = project;
-    }
-
 
     public Integer getId() {
         return id;
@@ -55,7 +34,7 @@ public class DPowerMapping {
     }
 
     public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+        this.projectId = projectId ;
     }
 
     public Integer getPower() {
@@ -79,7 +58,7 @@ public class DPowerMapping {
     }
 
     public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
+        this.updateTime = updateTime ;
     }
 
     @Override

@@ -1,23 +1,26 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DUser;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 public interface DUserMapper {
-    int deleteByUserId(Integer id);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(DUser record);
 
-    DUser findById(Integer userId);
+    DUser selectByPrimaryKey(Integer id);
 
     List<DUser> selectAll();
 
+    int updateByPrimaryKey(DUser record);
+
+    void deleteByUserId(Integer id);
+
+    DUser findById(Integer id);
+
     int updateUserById(DUser record);
 
-    DUser getUser(DUser user);
+    DUser getUser(DUser temp);
 
-    List<DUser> selectUserByName(String name);
-
+    List<DUser> selectUserByName(String s);
 }

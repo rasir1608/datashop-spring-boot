@@ -20,6 +20,12 @@ public class PowerMappingController {
     @Autowired
     private PowerMappingServer powerServer;
 
+
+    /**
+     * 申请加入项目
+     * @param req
+     * @return
+     */
     @PostMapping("/save")
     public Map save(@RequestBody JSONObject req){
         Integer id = req.getInteger("id");
@@ -74,7 +80,12 @@ public class PowerMappingController {
         }
     }
 
-    @GetMapping("/deleteById/{id}")
+    /**
+     * 删除申请项目的流程
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete/{id}")
     public Map deleteById(@PathVariable Integer id){
         return ResultUtil.handleResult(powerServer.deleteById(id),"删除失败",500);
     }
@@ -93,6 +104,10 @@ public class PowerMappingController {
         return ResultUtil.handleResult(powerServer.findById(id),"获取映射失败！",500);
     }
 
+    /**
+     * 我申请中的项目
+     * @return
+     */
     @GetMapping("/myApplying")
     public Map getMyApplyingProject(){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
@@ -100,6 +115,10 @@ public class PowerMappingController {
         return ResultUtil.handleResult(powerServer.queryAllMyApplingProjectList(userId),"获取项目列表失败",500);
     }
 
+    /**
+     * 申请我的项目的信息
+     * @return
+     */
     @GetMapping("/applyMine")
     public Map getApplyingMineMapping(){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
@@ -112,6 +131,11 @@ public class PowerMappingController {
         return ResultUtil.handleResult(powerServer.deleteById(powerId),"删除失败！",500);
     }
 
+    /**
+     * 驳回申请项目的请求
+     * @param powerId
+     * @return
+     */
     @GetMapping("/dismiss/{powerId}")
     public Map dismissApplying(@PathVariable Integer powerId){
         DPowerMapping dpm = powerServer.findById(powerId);
@@ -124,6 +148,11 @@ public class PowerMappingController {
         }
     }
 
+    /**
+     * 本人申请项目
+     * @param projectId
+     * @return
+     */
     @GetMapping("/create/{projectId}")
     public Map createMapping(@PathVariable Integer projectId){
         Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
@@ -134,7 +163,7 @@ public class PowerMappingController {
         newDpm.setProjectId(projectId);
         newDpm.setCreateTime(new Date().getTime());
         newDpm.setUpdateTime(new Date().getTime());
-        DPowerMapping dpm = powerServer.selectByUserAndProject(userId,projectId);
+        DPowerMapping dpm = powerServer.selectByUserAndProject(newDpm.getUserId(),newDpm.getProjectId());
         if(dpm != null){
             if(dpm.getPower() == 2) {
              powerServer.deleteById(dpm.getId());
@@ -147,6 +176,11 @@ public class PowerMappingController {
         }
     }
 
+    /**
+     * 往项目中添加成员
+     * @param mapping
+     * @return
+     */
     @PostMapping("/addUser")
     public Map addUser(@RequestBody JSONObject mapping){
         DPowerMapping dpm = new DPowerMapping();
@@ -171,6 +205,11 @@ public class PowerMappingController {
         }
     }
 
+    /**
+     * 项目中所有成员的列表
+     * @param projectId
+     * @return
+     */
     @GetMapping("/userList/{projectId}")
     public Map getProjectUserList(@PathVariable Integer projectId){
         return ResultUtil.handleResult(powerServer.getProjectUserList(projectId),"未获取到该项目下的用户列表",500);

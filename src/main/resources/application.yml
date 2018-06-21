@@ -24,3 +24,8 @@ security:
   basic:
     enabled: false
 
+#filePath
+file:
+  base-path: D:/work/git/inc-bdp-etl-dataetlweb
+  static-path: /static
+

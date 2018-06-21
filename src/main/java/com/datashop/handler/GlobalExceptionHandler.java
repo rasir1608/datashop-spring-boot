@@ -32,9 +32,7 @@ public class GlobalExceptionHandler {
             DatashopException de = (DatashopException) e;
             return ResultUtil.error(de.getMessage(),de.getCode());
         } else {
-            for (int i = 0; i < e.getStackTrace().length; i ++){
-                System.out.println(e.getStackTrace()[i]);
-            }
+            e.printStackTrace();
         }
 
         return ResultUtil.error(e.getMessage(),500);

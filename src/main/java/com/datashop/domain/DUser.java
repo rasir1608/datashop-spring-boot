@@ -13,9 +13,9 @@ public class DUser {
 
     private Integer role;
 
-    private Long createTime;
+    private String createTime;
 
-    private Long updateTime;
+    private String updateTime;
 
     public Integer getId() {
         return id;
@@ -30,7 +30,7 @@ public class DUser {
     }
 
     public void setAccount(String account) {
-        this.account = account;
+        this.account = account == null ? null : account.trim();
     }
 
     public String getName() {
@@ -38,7 +38,7 @@ public class DUser {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPassword() {
@@ -46,7 +46,7 @@ public class DUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
     public String getHeaderurl() {
@@ -54,7 +54,7 @@ public class DUser {
     }
 
     public void setHeaderurl(String headerurl) {
-        this.headerurl = headerurl;
+        this.headerurl = headerurl == null ? null : headerurl.trim();
     }
 
     public Integer getRole() {
@@ -65,20 +65,20 @@ public class DUser {
         this.role = role;
     }
 
-    public Long getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public Long getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
     }
 
     @Override
@@ -97,5 +97,12 @@ public class DUser {
         sb.append(", updateTime=").append(updateTime);
         sb.append("]");
         return sb.toString();
+    }
+
+    public void setUpdateTime(long time) {
+        setUpdateTime(String.valueOf(time));
+    }
+    public void setCreateTime(long time) {
+        setCreateTime(String.valueOf(time));
     }
 }
