@@ -6,7 +6,7 @@ jdbc:
 
 
 server:
-  port: 8888
+  port: 8089
   context-path: /dataapi
 
 #filePath

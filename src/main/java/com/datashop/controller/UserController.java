@@ -9,14 +9,15 @@ import com.datashop.utils.CookieUtil;
 import com.datashop.utils.FileHandler;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.InputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,11 @@ public class UserController {
 
     private BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder(11);
 
+    /**
+     * 通过id查找用户信息
+     * @param id
+     * @return
+     */
     @GetMapping("/getUserById/{id}")
     public Map getUserById(@PathVariable int id){
         DUser user = userService.getUserById(id);
@@ -52,7 +58,6 @@ public class UserController {
     @Transactional
     public Map create(@RequestBody JSONObject req){
         String account = (String) req.get("account");
-        System.out.println(account);
         DUser target = userService.getUserByAccount(account);
         if(target != null) {
             throw new DatashopException("帐号已被注册，请重新注册",400);
@@ -114,7 +119,7 @@ public class UserController {
     }
 
     /**
-     * 登录
+     * 用户登录
      * @param req
      * @return
      */
@@ -133,8 +138,6 @@ public class UserController {
             Map<String,Object> cookie = new HashMap<>();
             cookie.put("userId",String.valueOf(user.getId()));
             cookie.put("account",user.getAccount());
-            cookie.put("maxAge",String.valueOf(60*60*1000));
-            cookie.put("beginTime",String.valueOf(new Date().getTime()));
             CookieUtil.addCookie("bear",cookie);
             return ResultUtil.success(user);
         }
@@ -146,6 +149,7 @@ public class UserController {
      */
     @GetMapping("/logout")
     public Map logout(){
+        CookieUtil.removeCookie("bear");
         return ResultUtil.success("帐号注销成功！");
     }
 
@@ -165,14 +169,20 @@ public class UserController {
             throw new DatashopException("请先登录！",404);
         }
     }
-
-//    通过名称查找用户信息
+    /**
+     * 通过名称查找用户信息
+     * @param name
+     * @return
+     */
     @GetMapping("/findByName/{name}")
     public Map queryByName(@PathVariable String name){
         return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",404);
     }
 
-//    查询所有用户信息
+    /**
+     * 查询所有用户信息
+     * @return
+     */
     @GetMapping("/queryAll")
     public Map queryAll(){
         return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);

@@ -8,7 +8,6 @@ import com.datashop.utils.CookieUtil;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.plugin2.main.server.ResultHandler;
 
 import java.util.Date;
 import java.util.Map;
@@ -19,7 +18,6 @@ public class PowerMappingController {
 
     @Autowired
     private PowerMappingServer powerServer;
-
 
     /**
      * 申请加入项目

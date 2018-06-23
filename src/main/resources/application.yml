@@ -10,8 +10,20 @@ spring:
     show-sql: true
   profiles:
     active: dev
+  session:
+    store-type: none
+
 
 #security
 security:
   basic:
     enabled: false
+
+java:
+  home: E:\jdk\jdk1.8.0_65
+
+server:
+  session:
+    cookie:
+      max-age: 60
+      http-only: true

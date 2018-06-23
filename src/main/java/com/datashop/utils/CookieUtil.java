@@ -1,9 +1,12 @@
 package com.datashop.utils;
 
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +18,18 @@ import java.net.URLEncoder;
  * @author liuzh
  * @data 2018年1月29日
  */
+@Component
 public class CookieUtil {
 
+    private static int maxAge;
 
+    @Value("${server.session.cookie.max-age}")
+    private Integer age;
+
+    @PostConstruct
+    public void init(){
+        this.maxAge = this.age * 60;
+    }
 
     public static Cookie[] getCookies() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -36,6 +48,7 @@ public class CookieUtil {
     public static void saveCookie(Cookie cookie) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = attributes.getResponse();
+        cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
 

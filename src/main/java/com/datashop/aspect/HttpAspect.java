@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
@@ -43,19 +44,12 @@ public class HttpAspect {
         if(Pattern.matches(pattern,url)){
             CookieUtil.removeCookie("bear");
         } else {
-            Map cookie = CookieUtil.getCookie("bear",Map.class);
-            if(cookie != null) {
-                Long maxAge = new Long((String) cookie.get("maxAge"));
-                Long beginTime = new Long((String) cookie.get("beginTime"));
-                Long now = new Long(new Date().getTime());
-                if(now - beginTime > maxAge) {
-                    throw new DatashopException("登陆超时，请重新登陆！",302);
-                } else {
-                    cookie.put("beginTime",String.valueOf(now));
-                    CookieUtil.addCookie("bear",cookie);
-                }
-            } else {
+            Cookie cookie = CookieUtil.getCookie("bear", Cookie.class);
+            if(cookie == null) {
                 throw new DatashopException("请先登陆！",302);
+            } else {
+                CookieUtil.removeCookie("bear");
+                CookieUtil.addCookie("bear",cookie);
             }
         }
 
