@@ -1,8 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.datashop.mapper.DProjectMapper">
-
-    <resultMap id="BaseResultMap" type="com.datashop.domain.DProject">
+  <resultMap id="BaseResultMap" type="com.datashop.domain.DProject">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="ui" jdbcType="VARCHAR" property="ui" />
+    <result column="web" jdbcType="VARCHAR" property="web" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from d_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.datashop.domain.DProject">
+    insert into d_project (id, name, creator, 
+      modifier, remarks, model, 
+      ui, web, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
+      #{modifier,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{ui,jdbcType=VARCHAR}, #{web,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DProject">
+    update d_project
+    set name = #{name,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      ui = #{ui,jdbcType=VARCHAR},
+      web = #{web,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
+    from d_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
+    from d_project
+    order by id
+  </select>
+  <resultMap id="BaseResultMap" type="com.datashop.domain.DProject">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="ui" jdbcType="VARCHAR" property="ui" />
+    <result column="web" jdbcType="VARCHAR" property="web" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from d_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.datashop.domain.DProject">
+    insert into d_project (id, name, creator, 
+      modifier, remarks, model, 
+      ui, web, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
+      #{modifier,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{ui,jdbcType=VARCHAR}, #{web,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DProject">
+    update d_project
+    set name = #{name,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      ui = #{ui,jdbcType=VARCHAR},
+      web = #{web,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
+    from d_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
+    from d_project
+    order by id
+  </select>
+  <resultMap id="BaseResultMap" type="com.datashop.domain.DProject">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="creator" jdbcType="INTEGER" property="creator" />
@@ -14,31 +111,6 @@
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from d_project
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-
-  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DProject">
-    update d_project
-    set name = #{name,jdbcType=VARCHAR},
-    creator = #{creator,jdbcType=INTEGER},
-    modifier = #{modifier,jdbcType=VARCHAR},
-    remarks = #{remarks,jdbcType=VARCHAR},
-    model = #{model,jdbcType=VARCHAR},
-    ui = #{ui,jdbcType=VARCHAR},
-    web = #{web,jdbcType=VARCHAR},
-    create_time = #{createTime,jdbcType=VARCHAR},
-    update_time = #{updateTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
-    from d_project
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_project
     where id = #{id,jdbcType=INTEGER}

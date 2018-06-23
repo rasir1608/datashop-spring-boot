@@ -60,11 +60,96 @@
     from d_interface
     order by id
   </select>
+  <resultMap id="BaseResultMap" type="com.datashop.domain.DInterface">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="content_type" jdbcType="VARCHAR" property="contentType" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="modifier" jdbcType="INTEGER" property="modifier" />
+    <result column="request" jdbcType="VARCHAR" property="request" />
+    <result column="response" jdbcType="VARCHAR" property="response" />
+    <result column="project" jdbcType="INTEGER" property="project" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from d_interface
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.datashop.domain.DInterface">
+    insert into d_interface (id, name, path, 
+      method, content_type, creator, 
+      modifier, request, response, 
+      project, remark, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
+      #{modifier,jdbcType=INTEGER}, #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, 
+      #{project,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.datashop.domain.DInterface">
+    update d_interface
+    set name = #{name,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      modifier = #{modifier,jdbcType=INTEGER},
+      request = #{request,jdbcType=VARCHAR},
+      response = #{response,jdbcType=VARCHAR},
+      project = #{project,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, path, method, content_type, creator, modifier, request, response, 
+    project, remark, create_time, update_time
+    from d_interface
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, path, method, content_type, creator, modifier, request, response, 
+    project, remark, create_time, update_time
+    from d_interface
+    order by id
+  </select>
+  <resultMap id="BaseResultMap" type="com.datashop.domain.DInterface">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="content_type" jdbcType="VARCHAR" property="contentType" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="modifier" jdbcType="INTEGER" property="modifier" />
+    <result column="request" jdbcType="VARCHAR" property="request" />
+    <result column="response" jdbcType="VARCHAR" property="response" />
+    <result column="project" jdbcType="INTEGER" property="project" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+  </resultMap>
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_interface
     where id = #{id,jdbcType=INTEGER}
   </delete>
-
+  <insert id="insert" parameterType="com.datashop.domain.DInterface">
+    insert into d_interface (id, name, path, 
+      method, content_type, creator, 
+      modifier, request, response, 
+      project, remark, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
+      #{modifier,jdbcType=INTEGER}, #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, 
+      #{project,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
   <update id="updateById" parameterType="com.datashop.domain.DInterface">
     update d_interface
     set name = #{name,jdbcType=VARCHAR},
@@ -87,7 +172,12 @@
     from d_interface
     where id = #{id,jdbcType=INTEGER}
   </select>
-
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, path, method, content_type, creator, modifier, request, response, 
+    project, remark, create_time, update_time
+    from d_interface
+    order by id
+  </select>
   <select id="page" resultMap="BaseResultMap">
     select id, name, path, method, content_type, creator, modifier, request, response,
     project, remark, create_time, update_time
