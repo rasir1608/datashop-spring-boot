@@ -101,4 +101,13 @@ public class InterfaceServerImpl implements InterfaceServer {
             throw new DatashopException(e.getMessage(),500);
         }
     }
+
+    @Override
+    public Map getDetail(Integer interId, Integer userId) {
+        try{
+            return dInterfaceMapper.getDetail(interId,userId);
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),500);
+        }
+    }
 }

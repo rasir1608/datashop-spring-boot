@@ -101,9 +101,10 @@ public class InterfaceController {
      * @param id
      * @return
      */
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}")
     public Map getDetail(@PathVariable Integer id){
-       return ResultUtil.handleResult(interfaceServer.findById(id),"获取接口详情失败",200);
+        Integer userId = CookieUtil.getUserId("bear");
+       return ResultUtil.handleResult(interfaceServer.getDetail(id,userId),"获取接口详情失败",200);
     }
 
 }

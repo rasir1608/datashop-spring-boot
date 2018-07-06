@@ -25,4 +25,6 @@ public interface InterfaceServer {
     Map page(Map map);
 
     int total(Map map);
+
+    Map getDetail(Integer interId,Integer userId);
 }

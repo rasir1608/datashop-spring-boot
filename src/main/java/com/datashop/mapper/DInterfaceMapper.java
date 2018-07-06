@@ -1,6 +1,8 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DInterface;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +28,6 @@ public interface DInterfaceMapper {
     List<Map> page(Map map);
 
     Integer total(Map map);
+
+    Map getDetail(@Param("interId") Integer interId,@Param("userId") Integer userId);
 }

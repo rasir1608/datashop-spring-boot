@@ -108,4 +108,18 @@
     SELECT * FROM d_interface WHERE name = #{name};
   </select>
 
+  <select id="getDetail" resultType="Map">
+    select di.id, di.name, di.path, di.method, di.content_type AS contentType,di.request,di.response,
+    di.remarks, di.create_time AS createTime, di.update_time AS updateTime,
+    di.creator,du.name AS creatorName,
+    di.modifier,duer.name AS modifierName,
+    di.project, dp.name AS projectName,
+    dpm.power
+    from d_interface di
+    LEFT JOIN d_user du ON di.creator = du.id
+    LEFT JOIN d_user duer ON di.modifier = duer.id
+    LEFT JOIN d_project dp ON di.project = dp.id
+    LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId,jdbcType=INTEGER} AND dpm.project_id = di.project
+    WHERE di.id = #{interId,jdbcType=INTEGER}
+  </select>
 </mapper>
