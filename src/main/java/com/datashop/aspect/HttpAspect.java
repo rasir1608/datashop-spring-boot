@@ -39,12 +39,12 @@ public class HttpAspect {
         HttpServletRequest request = attributes.getRequest();
 
         String url = request.getRequestURI();
-
+        System.out.println(url);
         String pattern = contextPath.substring(1) + "/duser/((login)|(create)|(logout))$";
         if(Pattern.matches(pattern,url)){
             CookieUtil.removeCookie("bear");
         } else {
-            Cookie cookie = CookieUtil.getCookie("bear", Cookie.class);
+            Map cookie = CookieUtil.getCookie("bear", Map.class);
             if(cookie == null) {
                 throw new DatashopException("请先登陆！",302);
             } else {

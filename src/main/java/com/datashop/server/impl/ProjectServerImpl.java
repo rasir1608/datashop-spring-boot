@@ -1,11 +1,16 @@
 package com.datashop.server.impl;
 
+import com.datashop.domain.DPowerMapping;
 import com.datashop.domain.DProject;
 import com.datashop.exception.DatashopException;
+import com.datashop.mapper.DPowerMappingMapper;
 import com.datashop.mapper.DProjectMapper;
 import com.datashop.server.inter.ProjectServer;
+import com.datashop.utils.CookieUtil;
+import com.datashop.utils.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +26,18 @@ public class ProjectServerImpl implements ProjectServer {
     @Autowired
     private DProjectMapper projectMapper;
 
+    @Autowired
+    private DPowerMappingMapper powerMappingMapper;
+
+    @Transactional
     @Override
-    public DProject create(DProject dProject) {
+    public DProject create(DProject dProject, DPowerMapping dpm) {
         try{
             projectMapper.insert(dProject);
-            return projectMapper.findByName(dProject.getName());
+            DProject dp = projectMapper.findByName(dProject.getName());
+            dpm.setProjectId(dp.getId());
+            powerMappingMapper.insert(dpm);
+            return dp;
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }
@@ -41,10 +53,19 @@ public class ProjectServerImpl implements ProjectServer {
         }
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Integer id) {
         try{
+            DProject dp = projectMapper.findById(id);
+//            从d_project表中删除
             projectMapper.deleteById(id);
+//            从d_power_mapping表中删除所有的对应关系
+            powerMappingMapper.deleteMappingByProject(id);
+//            删除掉项目的UI、web、原型图片
+            if(dp.getModel() != null) FileHandler.removeFile(dp.getModel());
+            if(dp.getUi() != null) FileHandler.removeFile(dp.getUi());
+            if(dp.getWeb() != null) FileHandler.removeFile(dp.getWeb());
             return true;
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
@@ -84,9 +105,9 @@ public class ProjectServerImpl implements ProjectServer {
     }
 
     @Override
-    public Map queryDetail(Integer projectId) {
+    public Map queryDetail(Integer projectId,Integer userId) {
         try{
-            return projectMapper.queryDetail(projectId);
+            return projectMapper.queryDetail(projectId,userId);
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }

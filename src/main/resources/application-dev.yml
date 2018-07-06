@@ -11,6 +11,6 @@ server:
 
 #filePath
 file:
-  base-path: D:/work/git/inc-bdp-etl-dataetlweb
+  base-path: D:\vue\dataapi-vue
   static-path: /static
 

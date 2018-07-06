@@ -45,7 +45,7 @@ public class UserController {
             user.setPassword(null);
             return ResultUtil.success(user);
         } else {
-            throw new DatashopException("您输入ID有误",404);
+            throw new DatashopException("您输入ID有误",200);
         }
     }
 
@@ -60,7 +60,7 @@ public class UserController {
         String account = (String) req.get("account");
         DUser target = userService.getUserByAccount(account);
         if(target != null) {
-            throw new DatashopException("帐号已被注册，请重新注册",400);
+            throw new DatashopException("帐号已被注册，请重新注册",200);
         } else {
             DUser user = new DUser();
             user.setAccount((String) req.get("account"));
@@ -91,7 +91,7 @@ public class UserController {
         DUser reqUser = userService.getUserById(reqId);
 
         if( reqUser == null) {
-            throw new DatashopException("要修改的用户不存在",404);
+            throw new DatashopException("要修改的用户不存在",200);
         }
 
         reqUser.setId(reqId);
@@ -106,15 +106,15 @@ public class UserController {
             DUser user = userService.getUserById(userId);
             if(user != null){
                 if(user.getRole() < Auth.ADMIN.getRole()) {
-                    throw new DatashopException("只有管理员才能修改非本人的用户信息！",401);
+                    throw new DatashopException("只有管理员才能修改非本人的用户信息！",200);
                 } else {
-                    return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",500);
+                    return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",200);
                 }
             } else {
-                throw new DatashopException("登录信息失效！",401);
+                throw new DatashopException("登录信息失效！",200);
             }
         } else {
-            return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",500);
+            return ResultUtil.handleResult(userService.updateById(reqUser),"用户信息更改失败！",200);
         }
     }
 
@@ -126,13 +126,13 @@ public class UserController {
     @PostMapping("/login")
     public Map login(@RequestBody JSONObject req){
         if(req.get("account") == null || req.get("password") == null) {
-            throw new DatashopException("帐号密码不能为空！",400);
+            throw new DatashopException("帐号密码不能为空！",200);
         }
         DUser user = userService.getUserByAccount((String) req.get("account"));
         if(user == null) {
-            throw new DatashopException("帐号不存在，请重新输入！",404);
+            throw new DatashopException("帐号不存在，请重新输入！",200);
         } else if(!bCrypt.matches((String) req.get("password"),user.getPassword())){
-            throw new DatashopException("密码错误，请重新输入！",401);
+            throw new DatashopException("密码错误，请重新输入！",200);
         } else {
             user.setPassword(null);
             Map<String,Object> cookie = new HashMap<>();
@@ -166,7 +166,7 @@ public class UserController {
             user.setPassword(null);
             return ResultUtil.success(user);
         } else {
-            throw new DatashopException("请先登录！",404);
+            throw new DatashopException("请先登录！",200);
         }
     }
     /**
@@ -174,9 +174,10 @@ public class UserController {
      * @param name
      * @return
      */
-    @GetMapping("/findByName/{name}")
+    @GetMapping("/getUserListByName/{name}")
     public Map queryByName(@PathVariable String name){
-        return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",404);
+        if(name != null) name = "%"+name+"%";
+        return ResultUtil.handleResult(userService.getUserListByName(name),"没有找到用户信息",200);
     }
 
     /**
@@ -185,7 +186,7 @@ public class UserController {
      */
     @GetMapping("/queryAll")
     public Map queryAll(){
-        return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",404);
+        return ResultUtil.handleResult(userService.selectAll(),"没有找到用户信息",200);
     }
 
     /**
@@ -195,11 +196,22 @@ public class UserController {
      */
     @GetMapping("/updateName/{newName}")
     public Map changeName(@PathVariable String newName){
-        Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
-        Integer userId = new Integer((String) cookie.get("userId"));
-        DUser user = userService.getUserById(userId);
-        user.setName(newName);
-        return ResultUtil.handleResult(userService.updateById(user),"昵称修改失败！",500);
+        DUser temp = new DUser();
+        temp.setName(newName);
+        DUser exUser = userService.getUser(temp);
+        if(exUser != null) {
+            throw new DatashopException("昵称已被占用，请重新输入！",200);
+        } else {
+            Map<String,Object> cookie = CookieUtil.getCookie("bear",Map.class);
+            Integer userId = new Integer((String) cookie.get("userId"));
+            DUser user = userService.getUserById(userId);
+            if(user == null) {
+                throw new DatashopException("服务异常，请重新尝试",500);
+            } else {
+                user.setName(newName);
+                return ResultUtil.handleResult(userService.updateById(user),"昵称修改失败！",200);
+            }
+        }
     }
 
     /**
@@ -216,9 +228,9 @@ public class UserController {
         DUser user = userService.getUserById(userId);
         if(bCrypt.matches(oldP,user.getPassword())){
             user.setPassword(bCrypt.encode(newP));
-            return ResultUtil.handleResult(userService.updateById(user),"密码修改失败！",500);
+            return ResultUtil.handleResult(userService.updateById(user),"密码修改失败！",200);
         } else {
-            throw new DatashopException("原密码输入有误，请重新输入",404);
+            throw new DatashopException("原密码输入有误，请重新输入",200);
         }
     }
 
@@ -231,38 +243,39 @@ public class UserController {
     @PostMapping("/upload")
     public Map uploadUserHeader(@RequestParam("file") MultipartFile multipartFile, @RequestParam("fileName")String fileName){
         if(multipartFile.isEmpty()){
-            throw new DatashopException("未获取到图片",401);
+            throw new DatashopException("未获取到图片",200);
         } else if(multipartFile.getSize() > 2097152){
-            throw new DatashopException("请选择小于2MB的图片",401);
+            throw new DatashopException("请选择小于2MB的图片",200);
         }
         try{
             String contentType = multipartFile.getContentType();
             if(Pattern.matches("^image/\\w+",contentType)){
-                DUser user = getUserInfo();
-                String oldHeader = user.getHeaderurl();
-                if(oldHeader != null){
-                    FileHandler.removeFile(oldHeader);
-                }
+
                 String[] fileNameParts = multipartFile.getOriginalFilename().split("\\.");
                 String fileSuffix = fileNameParts[(fileNameParts.length-1)];
                 List<String> suffixArray = Arrays.asList("png","jpg","gif");
                 if(!suffixArray.contains(fileSuffix)){
-                    throw new DatashopException("请上传png、jpg、gif类型的文件！",401);
+                    throw new DatashopException("请上传png、jpg、gif类型的文件！",200);
                 } else{
+                    DUser user = getUserInfo();
                     String dirName ="/image";
                     String newFileName = user.getAccount() + "--" + "header"+new Date().getTime()+"."+fileSuffix;
                     String filePath = FileHandler.saveFile(multipartFile.getInputStream(),newFileName,dirName);
+                    String oldHeader = user.getHeaderurl();
+                    if(oldHeader != null){
+                        FileHandler.removeFile(oldHeader);
+                    }
                     user.setHeaderurl(filePath);
                     user.setUpdateTime(new Date().getTime());
                     userService.updateById(user);
                     return ResultUtil.success(filePath);
                 }
             } else {
-                throw new DatashopException("请不要上传图片以外的文件",401);
+                throw new DatashopException("请不要上传图片以外的文件",200);
             }
         } catch(Exception e){
             e.printStackTrace();
-            throw new DatashopException(e.getMessage(),500);
+            throw new DatashopException(e.getMessage(),200);
         }
     }
 
@@ -273,7 +286,7 @@ public class UserController {
         if(user != null) {
             return user;
         } else {
-            throw new DatashopException("登录信息有误",500);
+            throw new DatashopException("登录信息有误",200);
         }
     }
 

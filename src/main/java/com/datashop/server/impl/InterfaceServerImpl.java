@@ -81,7 +81,7 @@ public class InterfaceServerImpl implements InterfaceServer {
     @Override
     public Map page(Map map) {
         try{
-            List<DInterface> inList = dInterfaceMapper.page(map);
+            List<Map> inList = dInterfaceMapper.page(map);
             Integer total = dInterfaceMapper.total(map);
             Map<String,Object> result = new HashMap<>();
             result.put("list",inList);

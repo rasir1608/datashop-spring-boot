@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.datashop.domain.DInterface;
 import com.datashop.exception.DatashopException;
 import com.datashop.server.inter.InterfaceServer;
+import com.datashop.utils.CookieUtil;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +30,17 @@ public class InterfaceController {
      */
     @PostMapping("/page")
     public Map pageInterface(@RequestBody JSONObject req){
-        return ResultUtil.handleResult(interfaceServer.page(req),"获取接口列表失败",500);
+        String name = req.getString("name");
+        if(name != null){
+            name = "%"+name+"%";
+            req.put("name",name);
+        }
+        Integer page = req.getInteger("currentPage");
+        Integer size = req.getInteger("size");
+        req.put("offset",(page-1)*size);
+        Integer userId = CookieUtil.getUserId("bear");
+        req.put("userId",userId);
+        return ResultUtil.handleResult(interfaceServer.page(req),"获取接口列表失败",200);
     }
 
     /**
@@ -36,9 +48,9 @@ public class InterfaceController {
      * @param id
      * @return
      */
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Map deleteById(@PathVariable Integer id){
-        return ResultUtil.handleResult(interfaceServer.deleteById(id),"接口删除失败",500);
+        return ResultUtil.handleResult(interfaceServer.deleteById(id),"接口删除失败",200);
     }
 
     /**
@@ -56,7 +68,7 @@ public class InterfaceController {
         newDi.setContentType(req.getString("contentType"));
         newDi.setMethod(req.getString("method"));
         newDi.setProject(req.getInteger("project"));
-        newDi.setRemark(req.getString("remark"));
+        newDi.setRemarks(req.getString("remark"));
         newDi.setRequest(req.getString("request"));
         newDi.setResponse(req.getString("response"));
         newDi.setCreator(req.getInteger("creator"));
@@ -65,7 +77,7 @@ public class InterfaceController {
         if(id == null) {
             DInterface di = interfaceServer.findByName(name);
             if(di != null) {
-                throw new DatashopException("接口名称重复，请重新填写",401);
+                throw new DatashopException("接口名称重复，请重新填写",200);
             } else {
                 newDi.setCreateTime(new Date().getTime());
                 return create(newDi);
@@ -77,11 +89,11 @@ public class InterfaceController {
     }
 
     public Map create(DInterface dInterface){
-        return ResultUtil.handleResult(interfaceServer.insert(dInterface),"接口保存失败",500);
+        return ResultUtil.handleResult(interfaceServer.insert(dInterface),"接口保存失败",200);
     }
 
     public Map update(DInterface dInterface){
-        return ResultUtil.handleResult(interfaceServer.updateById(dInterface),"接口更新失败",500);
+        return ResultUtil.handleResult(interfaceServer.updateById(dInterface),"接口更新失败",200);
     }
 
     /**
@@ -91,7 +103,7 @@ public class InterfaceController {
      */
     @GetMapping("/detail/{id}")
     public Map getDetail(@PathVariable Integer id){
-       return ResultUtil.handleResult(interfaceServer.findById(id),"获取接口详情失败",500);
+       return ResultUtil.handleResult(interfaceServer.findById(id),"获取接口详情失败",200);
     }
 
 }

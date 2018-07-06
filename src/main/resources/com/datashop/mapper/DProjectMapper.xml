@@ -6,7 +6,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="creator" jdbcType="INTEGER" property="creator" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifier" jdbcType="INTEGER" property="modifier" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="model" jdbcType="VARCHAR" property="model" />
     <result column="ui" jdbcType="VARCHAR" property="ui" />
@@ -57,56 +57,69 @@
     order by id
   </select>
 
-  <select id="page" resultMap="BaseResultMap">
-    select id, name, creator, modifier, remarks, model, ui, web, create_time, update_time
-    from d_project
+  <select id="page" resultType="Map">
+    select dp.id AS projectId, dp.name AS projectName,dp.remarks, dp.model, dp.ui, dp.web,
+    dp.create_time AS createTime, dp.update_time AS updateTime,
+    dp.creator AS creatorId, duc.name AS creatorName,
+    dp.modifier AS modifierId, dum.name AS modifierName,
+    dpm.power
+    from d_project dp
+    LEFT JOIN d_user duc ON duc.id = dp.creator
+    LEFT JOIN d_user dum ON dum.id = dp.modifier
+    LEFT JOIN d_power_mapping dpm ON dpm.project_id = dp.id AND dpm.user_id = #{userId,jdbcType=INTEGER}
     <where>
       <if test="id != null and id != ''">
-        id = #{id}
+        dp.id = #{id}
       </if>
       <if test="name != null and name != ''">
         and
-        name like #{"%"+name+"%"}
+        dp.name like #{name}
       </if>
-      <if test="creator != null and creator != ''">
+      <if test="creatorName != null and creatorName != ''">
         and
-        creator = #{creator}
+        duc.name like #{creatorName}
       </if>
-      <if test="modifier != null and modifier != ''">
+      <if test="modifierName != null and modifierName != ''">
         and
-        modifier = #{modifier}
+        dp.modifierName LIKE #{modifierName}
       </if>
     </where>
-    order by update_time desc
+    order by dp.update_time desc
     limit #{offset},#{size}
   </select>
   <select id="total" resultType="int">
     select count(*)
-    from d_project
+    from d_project dp
+    LEFT JOIN d_user duc ON duc.id = dp.creator
+    LEFT JOIN d_user dum ON dum.id = dp.modifier
+    LEFT JOIN d_power_mapping dpm ON dpm.project_id = dp.id AND dpm.user_id = #{userId,jdbcType=INTEGER}
     <where>
       <if test="id != null and id != ''">
-        id = #{id}
+        dp.id = #{id}
       </if>
       <if test="name != null and name != ''">
         and
-        name like #{"%"+name+"%"}
+        dp.name like #{name}
       </if>
-      <if test="creator != null and creator != ''">
+      <if test="creatorName != null and creatorName != ''">
         and
-        creator = #{creator}
+        duc.name like #{creatorName}
       </if>
-      <if test="modifier != null and modifier != ''">
+      <if test="modifierName != null and modifierName != ''">
         and
-        modifier = #{modifier}
+        dp.modifierName LIKE #{modifierName}
       </if>
     </where>
   </select>
 
   <select id="queryDetail" resultType="Map">
-    SELECT dp.id , dp.name,dp.creator,dp.model,dp.ui,dp.web,
-    du.name AS creatorName,dp.create_time AS createTime,dp.update_time AS updateTime
+    SELECT dp.id,dp.name,dp.creator,dp.model,dp.ui,dp.web,dp.remarks,
+    dp.create_time AS createTime,dp.update_time AS updateTime,
+    dpm.power,
+    du.name AS creatorName
     FROM d_project dp
     LEFT JOIN d_user du ON dp.creator = du.id
+    LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId} AND dpm.project_id = #{projectId}
     WHERE dp.id = #{projectId,jdbcType=INTEGER};
   </select>
 

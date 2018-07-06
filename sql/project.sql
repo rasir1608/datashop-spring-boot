@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `d_project` (
   `id` int(11) NOT NULL AUTO_INCREMENT comment "系统ID",
   `name` varchar(255) NOT NULL comment "系统名称",
   `creator` int(11) NOT NULL comment "系统管理员ID",
-  `modifier` varchar(255) comment "系统操作人员,有操作权限的人",
+  `modifier` int(11) comment "系统修改人",
   `remarks` varchar(255) comment "系统备注",
   `model` varchar(255) comment "原型地址",
   `ui` varchar(255) comment "ui地址",

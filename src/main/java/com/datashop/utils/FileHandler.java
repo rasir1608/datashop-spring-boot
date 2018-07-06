@@ -47,7 +47,7 @@ public class FileHandler {
             while ((len = is.read(bytes)) != -1) {
                 os.write(bytes,0,len);
             }
-            return publicPath + "/" + fileName;
+            return publicPath + dirName + "/" + fileName;
         } catch (Exception e){
             throw new DatashopException(e.getMessage(),500);
         } finally {

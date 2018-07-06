@@ -39,5 +39,5 @@ public interface PowerMappingServer {
 
     List<Map> getProjectUserList(Integer projectId);
 
-    List<Map> getMyProjects(Integer userId);
+    Map getMyProjects(Integer userId,String name,Integer limit,Integer offset);
 }

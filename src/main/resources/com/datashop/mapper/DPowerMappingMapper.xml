@@ -9,8 +9,6 @@
     <result column="power" jdbcType="INTEGER" property="power" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
-    <association column="user_id" property="user" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw" />
-    <association column="project_id" property="project" select="com.datashop.mapper.DProjectMapper.findById" />
   </resultMap>
 
   <resultMap id="ProjectListMap" type="com.datashop.domain.PowerMapping">
@@ -18,6 +16,8 @@
       <result column="power" jdbcType="INTEGER" property="power" />
       <result column="create_time" jdbcType="BIGINT" property="createTime" />
       <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+      <association column="user_id" property="user" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw" />
+      <association column="project_id" property="project" select="com.datashop.mapper.DProjectMapper.findById" />
       <association column="user_id" property="user" select="com.datashop.mapper.DUserMapper.findByIdWidthoutPw" />
       <association column="project_id" property="project" select="com.datashop.mapper.DProjectMapper.findById" />
   </resultMap>
@@ -52,9 +52,9 @@
     from d_power_mapping
     order by update_time desc;
   </select>
-  <select id="deleteMappingByProject" resultMap="BaseResultMap">
+  <delete id="deleteMappingByProject" parameterType="java.lang.Integer">
     delete from d_power_mapping where project_id = #{projectId,jdbcType=INTEGER}
-  </select>
+  </delete>
   <select id="deleteMappingByUser" resultMap="BaseResultMap">
     delete from d_power_mapping where user_id =  #{userId,jdbcType=INTEGER}
   </select>
@@ -82,38 +82,64 @@
     order by dpm.update_time desc;
   </select>
   <select id="findByUserAndProject" resultMap="BaseResultMap">
-    select  id, user_id, project_id, power, create_time, update_time
+    select id, user_id, project_id, power, create_time, update_time
     from d_power_mapping
     where user_id = #{userId,jdbcType=INTEGER} and project_id = #{projectId,jdbcType=INTEGER}
   </select>
   <select id="queryAllMyApplingProjectList" resultType="Map">
-   SELECT dpm.id,dpm.user_id as usrId,dpm.power,dpm.project_id as projectId,
-   dpm.create_time as createTime,dpm.update_time as updateTime,
-   dp.name as projectName,dp.creator as projectCreator,du.name as projectCreatorName
+   SELECT dpm.id,dpm.power,dpm.create_time as createTime,dpm.update_time as updateTime,
+   dp.name as projectName,dp.id as projectId,dp.remarks,
+   du.id as projectCreatorId,du.name as projectCreatorName
   FROM d_power_mapping dpm LEFT JOIN d_project dp ON dpm.project_id = dp.id LEFT JOIN d_user du ON dp.creator = du.id
-  where dpm.user_id =  #{userId,jdbcType=INTEGER} and dpm.power = 0 or dpm.power = 2;
+  where dpm.user_id =  #{userId,jdbcType=INTEGER} and dpm.power &lt; 2;
 
   </select>
 
   <select id="queryAllApplyMineMappingList" resultType="Map">
-    SELECT dpm.id,dpm.user_id,dpm.power,dpm.project_id as projectId,dpm.create_time as createTime,
-  dpm.update_time as updateTime,dp.name as projectName,dp.creator as projectCreator,du.name as userName
+    SELECT dpm.id,dpm.power,dpm.create_time as createTime,dpm.update_time as updateTime,
+  dp.id as projectId,dp.name as projectName, dp.remarks,
+  du.id as applicantId,du.name as applicantName
     FROM d_power_mapping dpm LEFT JOIN d_project  dp ON dpm.project_id = dp.id LEFT JOIN d_user du ON dpm.user_id = du.id
-  where dp.creator = 10001 and dpm.power = 0 ;
+  where dp.creator = #{userId,jdbcType=INTEGER} and dpm.power = 1 ;
   </select>
 
   <select id="getProjectUserList" resultType="Map">
-    SELECT du.id AS userId,du.name AS userName,dp.id AS projectId,dp.name AS projectName,dpm.power
+    SELECT du.id AS userId,du.name AS userName,
+    dp.id AS projectId,dp.name AS projectName,
+    dpm.power,dpm.id AS powerId
     FROM d_power_mapping dpm RIGHT JOIN d_user du ON dpm.user_id = du.id LEFT JOIN d_project dp ON dpm.project_id = dp.id
-    WHERE dpm.project_id = #{projectId,jdbcType=INTEGER} and power = 1;
+    WHERE dpm.project_id = #{projectId,jdbcType=INTEGER} and power &gt; 1
+    ORDER BY dpm.power DESC, dpm.create_time DESC
   </select>
 
   <select id="getMyProjects" resultType="Map">
-    SELECT dp.id AS projectId, dp.name AS projectName,dp.creator,dp.model,dp.ui,dp.web,
-    du.name AS creatorName,dp.create_time AS createTime,dp.update_time AS updateTime
+    SELECT
+    dp.id AS projectId, dp.name AS projectName,dp.model,dp.ui,dp.web,dp.remarks,
+    dpm.power,
+    dp.creator AS creatorId,du.name AS creatorName,
+    dp.modifier AS modifierId, dum.name AS modifierName,
+    dp.create_time AS createTime,dp.update_time AS updateTime
     FROM d_power_mapping dpm
     LEFT JOIN d_project dp ON dpm.project_id = dp.id
     LEFT JOIN d_user du ON dp.creator = du.id
-    WHERE dpm.user_id = #{userId,jdbcType=INTEGER}  AND power = 1;
+    LEFT JOIN d_user dum ON dp.modifier = dum.id
+    WHERE dpm.user_id = #{userId,jdbcType=INTEGER}  AND dpm.power &gt; 1
+    <if test="name != null and name != ''">
+      AND dp.name LIKE #{name,jdbcType=VARCHAR}
+    </if>
+    ORDER BY dp.create_time desc
+    LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER};
   </select>
+
+  <select id="getMyProjectsTotal" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM  d_power_mapping dpm
+    LEFT JOIN d_project dp ON dpm.project_id = dp.id
+    LEFT JOIN d_user du ON dp.creator = du.id
+    WHERE dpm.user_id = #{userId,jdbcType=INTEGER}  AND dpm.power &gt; 1
+    <if test="name != null and name != ''">
+      AND dp.name LIKE #{name,jdbcType=VARCHAR}
+    </if>;
+  </select>
+
+
 </mapper>

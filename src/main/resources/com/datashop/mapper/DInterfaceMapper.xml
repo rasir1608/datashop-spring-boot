@@ -12,7 +12,7 @@
     <result column="request" jdbcType="VARCHAR" property="request" />
     <result column="response" jdbcType="VARCHAR" property="response" />
     <result column="project" jdbcType="INTEGER" property="project" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
   </resultMap>
@@ -22,14 +22,14 @@
   </delete>
   <insert id="insert" parameterType="com.datashop.domain.DInterface">
     insert into d_interface (id, name, path, 
-      method, content_type, creator, 
+      method, content_type, creator,
       modifier, request, response, 
-      project, remark, create_time, 
+      project, remarks, create_time,
       update_time)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
       #{method,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
       #{modifier,jdbcType=INTEGER}, #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, 
-      #{project,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{project,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT},
       #{updateTime,jdbcType=BIGINT})
   </insert>
   <update id="updateById" parameterType="com.datashop.domain.DInterface">
@@ -43,41 +43,47 @@
       request = #{request,jdbcType=VARCHAR},
       response = #{response,jdbcType=VARCHAR},
       project = #{project,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, path, method, content_type, creator, modifier, request, response, 
-    project, remark, create_time, update_time
+    select id, name, path, method, content_type, creator, modifier, request, response,
+    project, remarks, create_time, update_time
     from d_interface
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, path, method, content_type, creator, modifier, request, response, 
-    project, remark, create_time, update_time
+    select id, name, path, method, content_type, creator, modifier, request, response,
+    project, remarks, create_time, update_time
     from d_interface
     order by id
   </select>
-  <select id="page" resultMap="BaseResultMap">
-    select id, name, path, method, content_type, creator, modifier, request, response,
-    project, remark, create_time, update_time
-    from d_interface
+  <select id="page" resultType="Map">
+    select di.id, di.name, di.path, di.method, di.content_type AS contentType,
+    di.remarks, di.create_time AS createTime, di.update_time AS updateTime,
+    di.creator,du.name AS creatorName,
+    di.modifier,duer.name AS modifierName,
+    di.project, dp.name AS projectName,
+    dpm.power
+    from d_interface di
+    LEFT JOIN d_user du ON di.creator = du.id
+    LEFT JOIN d_user duer ON di.modifier = duer.id
+    LEFT JOIN d_project dp ON di.project = dp.id
+    LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId} AND dpm.project_id = #{project}
     <where>
+      di.project = #{project}
       <if test="id != null and id != ''">
-        id = #{id}
+        and
+        di.id = #{id}
       </if>
       <if test="name != null and name != ''">
         and
-        name like #{"%"+name+"%"}
-      </if>
-      <if test="project != null and project != ''">
-        and
-        project = #{project}
+        di.name like #{name}
       </if>
     </where>
-    order by update_time desc
+    order by di.update_time desc
     limit #{offset},#{size}
   </select>
   <select id="total" resultType="int">
@@ -89,7 +95,7 @@
       </if>
       <if test="name != null and name != ''">
         and
-        name like #{"%"+name+"%"}
+        name like #{name}
       </if>
       <if test="project != null and project != ''">
         and

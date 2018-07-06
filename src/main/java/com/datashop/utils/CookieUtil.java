@@ -1,5 +1,6 @@
 package com.datashop.utils;
 
+import com.datashop.exception.DatashopException;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * cookie操作工具类
@@ -142,6 +144,15 @@ public class CookieUtil {
 
         } catch (Exception e) {
             System.out.println(" -------删除cookie失败！--------" + e.getMessage());
+        }
+    }
+
+    public static Integer getUserId(String name){
+        try {
+            Map cookie = getCookie(name,Map.class);
+            return new Integer((String) cookie.get("userId"));
+        } catch (Exception e){
+            throw new DatashopException(e.getMessage(),200);
         }
     }
 }

@@ -23,7 +23,7 @@ public interface DInterfaceMapper {
 
     int deleteById(Integer id);
 
-    List<DInterface> page(Map map);
+    List<Map> page(Map map);
 
     Integer total(Map map);
 }

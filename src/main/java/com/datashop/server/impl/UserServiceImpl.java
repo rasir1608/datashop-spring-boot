@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserServer {
     @Override
     public List<DUser> getUserListByName(String name) {
         try {
-            return userMapper.selectUserByName("%"+name+"%");
+            return userMapper.selectUserByName(name);
         } catch (Exception e){
             throw new DatashopException(e.getMessage(),500);
         }

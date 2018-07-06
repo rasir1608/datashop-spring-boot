@@ -1,6 +1,8 @@
 package com.datashop.mapper;
 
 import com.datashop.domain.DProject;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +29,5 @@ public interface DProjectMapper {
 
     Integer total(Map params);
 
-    Map queryDetail(Integer projectId);
+    Map queryDetail(@Param("projectId") Integer projectId, @Param("userId") Integer userId);
 }

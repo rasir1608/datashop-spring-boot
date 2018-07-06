@@ -7,7 +7,7 @@ public class DProject {
 
     private Integer creator;
 
-    private String modifier;
+    private Integer modifier;
 
     private String remarks;
 
@@ -45,12 +45,12 @@ public class DProject {
         this.creator = creator;
     }
 
-    public String getModifier() {
+    public Integer getModifier() {
         return modifier;
     }
 
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
+    public void setModifier(Integer modifier) {
+        this.modifier = modifier;
     }
 
     public String getRemarks() {

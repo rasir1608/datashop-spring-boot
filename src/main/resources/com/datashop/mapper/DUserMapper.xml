@@ -63,8 +63,8 @@
       name = #{name}
     </if>
   </select>
-  <select id="selectUserByName" resultMap="BaseResultMap">
-    select id, account, name, headerurl, role, create_time, update_time
+  <select id="selectUserByName" resultType="Map">
+    select id, name
     from d_user
     where
     name LIKE #{name}

@@ -21,7 +21,7 @@ public class DInterface {
 
     private Integer project;
 
-    private String remark;
+    private String remarks;
 
     private Long createTime;
 
@@ -107,12 +107,12 @@ public class DInterface {
         this.project = project;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+    public void setRemarks(String remark) {
+        this.remarks = remark == null ? null : remark.trim();
     }
 
     public Long getCreateTime() {
@@ -147,7 +147,7 @@ public class DInterface {
         sb.append(", request=").append(request);
         sb.append(", response=").append(response);
         sb.append(", project=").append(project);
-        sb.append(", remark=").append(remark);
+        sb.append(", remark=").append(remarks);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append("]");

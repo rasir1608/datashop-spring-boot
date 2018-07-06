@@ -6,7 +6,9 @@ import com.datashop.mapper.DPowerMappingMapper;
 import com.datashop.server.inter.PowerMappingServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ public class PowerMappingImpl implements PowerMappingServer {
     @Autowired
     private DPowerMappingMapper powerMapping;
 
+    @Transactional
     @Override
     public DPowerMapping create(DPowerMapping dPowerMapping) {
         try {
@@ -140,9 +143,17 @@ public class PowerMappingImpl implements PowerMappingServer {
     }
 
     @Override
-    public List<Map> getMyProjects(Integer userId) {
+    public Map getMyProjects(Integer userId,String name ,Integer limit,Integer offset) {
         try {
-            return powerMapping.getMyProjects(userId);
+            if(name != null){
+                name = "%" + name +"%";
+            }
+            List projectList = powerMapping.getMyProjects(userId,name,limit,offset);
+            Integer total = powerMapping.getMyProjectsTotal(userId,name,limit,offset);
+            Map map = new HashMap();
+            map.put("list",projectList);
+            map.put("total",total);
+            return map;
         } catch (Exception e) {
             throw new DatashopException(e.getMessage(),500);
         }

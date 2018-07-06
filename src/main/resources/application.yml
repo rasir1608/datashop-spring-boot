@@ -4,7 +4,9 @@ mybatis:
   config_file: mybatis-config.xml
   mapper_path: /mapper/**.xml
   entity_package: com.datashop.domain
-
+  configuration:
+    sql-fragments:
+    call-setters-on-nulls: true
 spring:
   jpa:
     show-sql: true
