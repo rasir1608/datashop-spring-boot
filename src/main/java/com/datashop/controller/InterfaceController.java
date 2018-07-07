@@ -68,12 +68,13 @@ public class InterfaceController {
         newDi.setContentType(req.getString("contentType"));
         newDi.setMethod(req.getString("method"));
         newDi.setProject(req.getInteger("project"));
-        newDi.setRemarks(req.getString("remark"));
+        newDi.setRemarks(req.getString("remarks"));
         newDi.setRequest(req.getString("request"));
         newDi.setResponse(req.getString("response"));
         newDi.setCreator(req.getInteger("creator"));
         newDi.setModifier(req.getInteger("modifier"));
         newDi.setUpdateTime(new Date().getTime());
+        newDi.setCreateTime(req.getLong("createTime"));
         if(id == null) {
             DInterface di = interfaceServer.findByName(name);
             if(di != null) {
@@ -83,7 +84,9 @@ public class InterfaceController {
                 return create(newDi);
             }
         } else {
+            Integer userId = CookieUtil.getUserId("bear");
             newDi.setId(id);
+            newDi.setModifier(userId);
             return update(newDi);
         }
     }
@@ -93,7 +96,12 @@ public class InterfaceController {
     }
 
     public Map update(DInterface dInterface){
-        return ResultUtil.handleResult(interfaceServer.updateById(dInterface),"接口更新失败",200);
+        Boolean success = interfaceServer.updateById(dInterface);
+        if(success) {
+            return ResultUtil.handleResult(interfaceServer.getDetail(dInterface.getId(),dInterface.getModifier()),"获取接口详情失败",200);
+        } else {
+            throw new DatashopException("接口信息更新失败",200);
+        }
     }
 
     /**
