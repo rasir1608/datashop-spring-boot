@@ -2,6 +2,7 @@ package com.datashop.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.datashop.bean.Auth;
+import com.datashop.bean.VerificationCode;
 import com.datashop.domain.DUser;
 import com.datashop.exception.DatashopException;
 import com.datashop.server.impl.UserServiceImpl;
@@ -15,9 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -279,6 +284,64 @@ public class UserController {
         }
     }
 
+    /**
+     * 获取验证码
+     * @param request
+     * @param response
+     */
+    @GetMapping("/getVerificationCode")
+    public  void getVerificationCode(HttpServletRequest request, HttpServletResponse response){
+        System.out.println(294);
+        try{
+                VerificationCode verificationCode = new VerificationCode();
+                //获取验证码图片
+                BufferedImage image = verificationCode.getImage();
+                //获取验证码内容
+                String text = verificationCode.getText();
+                // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
+                StringBuffer randomCode = new StringBuffer();
+                randomCode.append(text);
+                // 将验证码保存到Session中。
+                HttpSession session = request.getSession();
+                session.setAttribute("signcode", randomCode.toString());
+                System.out.println("session-signcode==>"+randomCode.toString());
+                // 禁止图像缓存。
+                response.setHeader("Pragma", "no-cache");
+                response.setHeader("Cache-Control", "no-cache");
+                response.setDateHeader("Expires", 0);
+                response.setContentType("image/jpeg");
+                // 将图像输出到Servlet输出流中。
+                ServletOutputStream sos = response.getOutputStream();
+                ImageIO.write(image, "jpeg", sos);
+                sos.flush();
+                sos.close();
+            } catch (Exception e){
+                throw new DatashopException(e.getMessage(),500);
+            }
+    }
+
+    /**
+     * 校验验证码
+     * @param request
+     * @param signcode
+     * @return
+     */
+    @GetMapping("/checkVerificationCode/{signcode}")
+    public Map check(HttpServletRequest request,@PathVariable String signcode) {
+        HttpSession session = request.getSession();
+        String signcodeSession = (String) session.getAttribute("signcode");
+        System.out.println("signcode==>"+signcode);
+        System.out.println("signcodeSession==>"+signcodeSession);
+        if(signcode == null){
+            throw new DatashopException("请输入验证码",200);
+        }else if( signcodeSession == null){
+            throw new DatashopException("请重新刷新验证码",200);
+        } else if (signcode.equalsIgnoreCase(signcodeSession)) { //验证的时候不区分大小写
+            return ResultUtil.success("验证码正确");
+        } else {
+            return ResultUtil.error("验证码错误",200);
+        }
+    }
     private DUser getUserInfo(){
         Map cookie = CookieUtil.getCookie("bear",Map.class);
         Integer userId = new Integer((String) cookie.get("userId"));

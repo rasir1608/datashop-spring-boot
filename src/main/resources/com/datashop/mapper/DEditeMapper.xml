@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datashop.mapper.DEditeMapper">
+    <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from d_interface
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.datashop.domain.DEdite">
+    insert into d_edite (id, editor, target,
+      kind, islock, create_time,update_time)
+    values (#{id,jdbcType=INTEGER},  #{editor,jdbcType=INTEGER},
+      #{target,jdbcType=INTEGER}, #{kind,jdbcType=INTEGER},
+      #{islock,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+    <update id="updateById" parameterType="com.datashop.domain.DEdite">
+    update d_edite
+    set
+      editor = #{editor,jdbcType=INTEGER},
+      target = #{target,jdbcType=INTEGER},
+      kind = #{kind,jdbcType=INTEGER},
+      islock = #{islock,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="getDetail" resultType="java.util.Map">
+    select de.id, de.editor,de.target,de.kind,de.islock,
+    de.create_time as createTime, de.update_time as updateTime,
+    du.name as editorName
+    from d_edite de
+    left join d_user du on du.id = de.editor
+    where de.kind = #{kind,jdbcType=INTEGER} and de.target =  #{target,jdbcType=INTEGER};
+  </select>
+
+</mapper>
