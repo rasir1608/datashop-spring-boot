@@ -16,4 +16,7 @@ public interface DEditeMapper {
 
     Map getDetail(@Param("kind") Integer kind,@Param("target") Integer target);
 
+    DEdite findById(Integer id);
+
+    DEdite getDetailByTarget(@Param("kind") Integer kind,@Param("target") Integer target);
 }

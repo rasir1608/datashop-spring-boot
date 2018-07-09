@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface ProjectServer {
 
-    DProject create(DProject dProject,DPowerMapping dpm);
+    Map create(DProject dProject);
 
-    DProject update(DProject dProject);
+    Map update(DProject dProject);
 
     Boolean deleteById(Integer id);
 

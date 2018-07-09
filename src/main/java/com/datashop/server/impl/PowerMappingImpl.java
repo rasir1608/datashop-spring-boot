@@ -48,6 +48,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public Boolean deleteMappingByProject(Integer projectId) {
         try {
@@ -58,6 +59,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public Boolean deleteMappingByUser(Integer userId) {
         try {
@@ -68,6 +70,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public Boolean deleteByUserAndProject(Integer userId, Integer projectId) {
         try {
@@ -77,6 +80,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             throw new DatashopException(e.getMessage(),500);
         }
     }
+
     @Override
     public DPowerMapping selectByUserAndProject(Integer userId,Integer projectId){
         try {
@@ -95,6 +99,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public DPowerMapping updateById(DPowerMapping dPowerMapping) {
         try {
@@ -105,6 +110,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Integer id) {
         try {
@@ -115,6 +121,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         }
     }
 
+    @Transactional
     @Override
     public List<Map> queryAllMyApplingProjectList(Integer userId) {
         try {

@@ -13,4 +13,7 @@ public interface EditeServer {
     Map getDetail(Integer kind,Integer target);
 
     Boolean deleteById(Integer id);
+
+    DEdite findById(Integer id);
+
 }

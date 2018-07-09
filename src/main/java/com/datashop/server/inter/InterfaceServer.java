@@ -12,7 +12,7 @@ public interface InterfaceServer {
 
     Boolean deleteById(Integer id);
 
-    DInterface insert(DInterface record);
+    Map insert(DInterface record);
 
     DInterface findById(Integer id);
 

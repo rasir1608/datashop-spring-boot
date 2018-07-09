@@ -113,13 +113,19 @@
   </select>
 
   <select id="queryDetail" resultType="Map">
-    SELECT dp.id,dp.name,dp.creator,dp.model,dp.ui,dp.web,dp.remarks,
+    SELECT dp.id,dp.name,dp.model,dp.ui,dp.web,dp.remarks,
     dp.create_time AS createTime,dp.update_time AS updateTime,
     dpm.power,
-    du.name AS creatorName
+    dp.creator, duc.name AS creatorName,
+    dp.modifier, dum.name AS modifierName,
+    de.id AS editeId,de.islock,de.editor,de.update_time as lastEditeTime,
+    due.name AS editorName
     FROM d_project dp
-    LEFT JOIN d_user du ON dp.creator = du.id
-    LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId} AND dpm.project_id = #{projectId}
+    LEFT JOIN d_user duc ON dp.creator = duc.id
+    LEFT JOIN d_user dum ON dp.modifier = dum.id
+    LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId,jdbcType=INTEGER} AND dpm.project_id = #{projectId,jdbcType=INTEGER}
+    LEFT JOIN d_edite de ON de.kind = 0 AND de.target = #{projectId,jdbcType=INTEGER}
+    LEFT JOIN d_user due ON de.editor = due.id
     WHERE dp.id = #{projectId,jdbcType=INTEGER};
   </select>
 

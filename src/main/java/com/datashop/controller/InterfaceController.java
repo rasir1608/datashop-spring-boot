@@ -61,9 +61,9 @@ public class InterfaceController {
     @PostMapping("/save")
     public Map saveInteface(@RequestBody JSONObject req){
         Integer id = req.getInteger("id");
-        String name = req.getString("name");
         DInterface newDi = new DInterface();
-        newDi.setName(name);
+        newDi.setId(id);
+        newDi.setName(req.getString("name"));
         newDi.setPath(req.getString("path"));
         newDi.setContentType(req.getString("contentType"));
         newDi.setMethod(req.getString("method"));
@@ -76,32 +76,32 @@ public class InterfaceController {
         newDi.setUpdateTime(new Date().getTime());
         newDi.setCreateTime(req.getLong("createTime"));
         if(id == null) {
-            DInterface di = interfaceServer.findByName(name);
-            if(di != null) {
-                throw new DatashopException("接口名称重复，请重新填写",200);
-            } else {
-                newDi.setCreateTime(new Date().getTime());
-                return create(newDi);
-            }
+            return create(newDi);
         } else {
-            Integer userId = CookieUtil.getUserId("bear");
-            newDi.setId(id);
-            newDi.setModifier(userId);
             return update(newDi);
         }
     }
 
     public Map create(DInterface dInterface){
-        return ResultUtil.handleResult(interfaceServer.insert(dInterface),"接口保存失败",200);
+        DInterface di = interfaceServer.findByName(dInterface.getName());
+        if(di != null) {
+            throw new DatashopException("接口名称重复，请重新填写",200);
+        } else {
+            Integer userId = CookieUtil.getUserId("bear");
+            dInterface.setCreateTime(new Date().getTime());
+            dInterface.setUpdateTime(new Date().getTime());
+            dInterface.setCreator(userId);
+            dInterface.setModifier(userId);
+            return ResultUtil.handleResult(interfaceServer.getDetail(dInterface.getId(),userId),"接口保存失败",200);
+        }
     }
 
     public Map update(DInterface dInterface){
-        Boolean success = interfaceServer.updateById(dInterface);
-        if(success) {
-            return ResultUtil.handleResult(interfaceServer.getDetail(dInterface.getId(),dInterface.getModifier()),"获取接口详情失败",200);
-        } else {
-            throw new DatashopException("接口信息更新失败",200);
-        }
+        Integer userId = CookieUtil.getUserId("bear");
+        dInterface.setModifier(userId);
+        dInterface.setUpdateTime(new Date().getTime());
+        interfaceServer.updateById(dInterface);
+        return ResultUtil.handleResult(interfaceServer.getDetail(dInterface.getId(),userId),"获取接口详情失败",200);
     }
 
     /**

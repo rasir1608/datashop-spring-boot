@@ -13,8 +13,8 @@
     <result column="response" jdbcType="VARCHAR" property="response" />
     <result column="project" jdbcType="INTEGER" property="project" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from d_interface
@@ -114,12 +114,16 @@
     di.creator,du.name AS creatorName,
     di.modifier,duer.name AS modifierName,
     di.project, dp.name AS projectName,
-    dpm.power
+    dpm.power,
+    de.id AS editeId,de.islock,de.editor,de.update_time as lastEditeTime,
+    due.name AS editorName
     from d_interface di
     LEFT JOIN d_user du ON di.creator = du.id
     LEFT JOIN d_user duer ON di.modifier = duer.id
     LEFT JOIN d_project dp ON di.project = dp.id
     LEFT JOIN d_power_mapping dpm ON dpm.user_id = #{userId,jdbcType=INTEGER} AND dpm.project_id = di.project
+    LEFT JOIN d_edite de ON de.kind = 1 AND de.target = di.id
+    LEFT JOIN d_user due ON due.id = de.editor
     WHERE di.id = #{interId,jdbcType=INTEGER}
   </select>
 </mapper>

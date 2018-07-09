@@ -1,19 +1,18 @@
 package com.datashop.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.datashop.domain.DPowerMapping;
 import com.datashop.domain.DProject;
 import com.datashop.exception.DatashopException;
-import com.datashop.server.inter.PowerMappingServer;
 import com.datashop.server.inter.ProjectServer;
 import com.datashop.utils.CookieUtil;
 import com.datashop.utils.FileHandler;
 import com.datashop.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +27,7 @@ public class projectController {
 
     @Autowired
     private ProjectServer projectServer;
+
 
     /**
      * 新建和保存项目
@@ -48,25 +48,23 @@ public class projectController {
         if(exit != null) {
             throw new DatashopException("已有同名项目存在，请重新命名后提交！",200);
         } else {
+            Integer userId = CookieUtil.getUserId("bear");
+            dProject.setCreator(userId);
             dProject.setCreateTime(new Date().getTime());
             dProject.setUpdateTime(new Date().getTime());
-            DPowerMapping dpm = new DPowerMapping();
-            dpm.setPower(5);
-            Map cookie = CookieUtil.getCookie("bear",Map.class);
-            dpm.setUserId(new Integer((String) cookie.get("userId")));
-            dpm.setCreateTime(new Date().getTime());
-            dpm.setUpdateTime(new Date().getTime());
-            return ResultUtil.success(projectServer.create(dProject,dpm));
+            return ResultUtil.success(projectServer.create(dProject));
         }
     }
 
     private Map update(DProject dProject){
+        Integer userId = CookieUtil.getUserId("bear");
         DProject exit = projectServer.findById(dProject.getId());
         if(exit == null) {
             throw new DatashopException("要更新的项目不存在！",200);
         } else if(!dProject.getName().equals(exit.getName())){
             throw new DatashopException("暂不支持修改项目名称，请确认后再保存！",200);
         } else {
+            dProject.setModifier(userId);
             dProject.setUpdateTime(new Date().getTime());
             return ResultUtil.handleResult(projectServer.update(dProject),"项目信息保存失败！",200);
         }

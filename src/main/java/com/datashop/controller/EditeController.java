@@ -30,26 +30,37 @@ public class EditeController {
         this.timeout = this.editeTimeout * 1000;
     }
 
-    @PostMapping("/unlock")
-    public Map unlock(@RequestBody JSONObject req){
+    @PostMapping("/create")
+    public Map createEdite(@RequestBody JSONObject req){
+        Integer userId = CookieUtil.getUserId("bear");
         Integer target = req.getInteger("target");
         Integer kind = req.getInteger("kind");
-        Map edite = editeServer.getDetail(kind,target);
-        DEdite de = turn2DEdite(edite);
-        de.setIslock(0);
-        editeServer.updateById(de);
-        return ResultUtil.success(editeServer.getDetail(kind,target));
+        DEdite de = new DEdite();
+        de.setEditor(userId);
+        de.setKind(kind);
+        de.setTarget(target);
+        de.setIslock(1);
+        de.setCreateTime(new Date().getTime());
+        de.setUpdateTime(new Date().getTime());
+        return ResultUtil.success(editeServer.insert(de));
     }
 
-    @PostMapping("/lock")
-    public Map lock(@RequestBody JSONObject req){
-        Integer target = req.getInteger("target");
-        Integer kind = req.getInteger("kind");
-        Map edite = editeServer.getDetail(kind,target);
-        DEdite de = turn2DEdite(edite);
-        de.setIslock(1);
-        editeServer.updateById(de);
-        return ResultUtil.success(editeServer.getDetail(kind,target));
+    @GetMapping("/unlock/{editeId}")
+    public Map unlock(@PathVariable Integer editeId){
+        DEdite edite = editeServer.findById(editeId);
+        edite.setIslock(0);
+        edite.setUpdateTime(new Date().getTime());
+        return ResultUtil.success(editeServer.updateById(edite));
+    }
+
+    @GetMapping("/lock/{editeId}")
+    public Map lock(@PathVariable Integer editeId){
+        Integer userId = CookieUtil.getUserId("bear");
+        DEdite edite = editeServer.findById(editeId);
+        edite.setIslock(1);
+        edite.setEditor(userId);
+        edite.setUpdateTime(new Date().getTime());
+        return ResultUtil.success(editeServer.updateById(edite));
     }
 
     @PostMapping("/detail")
