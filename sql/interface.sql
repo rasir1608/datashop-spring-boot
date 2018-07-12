@@ -1,4 +1,4 @@
-use `datashop`;
+-- use `datashop`;
 CREATE TABLE IF NOT EXISTS `d_interface` (
   `id` int(11) NOT NULL AUTO_INCREMENT comment "接口ID",
   `name` varchar(255) NOT NULL comment "接口名称",

@@ -1,5 +1,5 @@
 
-use `datashop`;
+-- use `datashop`;
 CREATE TABLE `d_edite` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `editor` int(11) NOT NULL COMMENT '编辑者账号',

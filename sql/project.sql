@@ -1,4 +1,4 @@
-use `datashop`;
+-- use `datashop`;
 CREATE TABLE IF NOT EXISTS `d_project` (
   `id` int(11) NOT NULL AUTO_INCREMENT comment "系统ID",
   `name` varchar(255) NOT NULL comment "系统名称",

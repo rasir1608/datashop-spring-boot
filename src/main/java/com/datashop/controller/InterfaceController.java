@@ -92,7 +92,7 @@ public class InterfaceController {
             dInterface.setUpdateTime(new Date().getTime());
             dInterface.setCreator(userId);
             dInterface.setModifier(userId);
-            return ResultUtil.handleResult(interfaceServer.getDetail(dInterface.getId(),userId),"接口保存失败",200);
+            return ResultUtil.handleResult(interfaceServer.insert(dInterface),"接口保存失败",200);
         }
     }
 

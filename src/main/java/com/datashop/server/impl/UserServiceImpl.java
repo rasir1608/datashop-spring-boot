@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserServer {
              userMapper.deleteByUserId(id);
              return true;
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserServer {
         try {
             return userMapper.selectAll();
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserServer {
             retUser.setPassword(null);
             return retUser;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserServer {
         try {
             return userMapper.getUser(temp);
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -75,6 +79,7 @@ public class UserServiceImpl implements UserServer {
             user.setName(null);
             return userMapper.getUser(user);
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -84,15 +89,21 @@ public class UserServiceImpl implements UserServer {
         try {
             return userMapper.selectUserByName(name);
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
 
     @Override
     public DUser getUserByAccount(String account) {
-        DUser temp = new DUser();
-        temp.setAccount(account);
-        return userMapper.getUser(temp);
+        try {
+            DUser temp = new DUser();
+            temp.setAccount(account);
+            return userMapper.getUser(temp);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new DatashopException(e.getMessage(),500);
+        }
     }
 
 }

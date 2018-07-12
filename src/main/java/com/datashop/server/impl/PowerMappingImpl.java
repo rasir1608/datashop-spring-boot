@@ -25,7 +25,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.insert(dPowerMapping);
             return powerMapping.findByUserAndProject(dPowerMapping.getUserId(),dPowerMapping.getProjectId());
         } catch (Exception e) {
-
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -35,6 +35,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.selectUsersByProject(projectId,power);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -44,6 +45,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.selectProjectsByUser(userId,power);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -55,6 +57,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.deleteMappingByProject(projectId);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -66,6 +69,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.deleteMappingByUser(userId);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -77,6 +81,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.deleteByUserAndProject(userId,projectId);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -86,6 +91,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.findByUserAndProject(userId,projectId);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -95,6 +101,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.findById(id);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -106,6 +113,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.updateById(dPowerMapping);
             return powerMapping.findById(dPowerMapping.getId());
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -117,6 +125,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             powerMapping.deleteById(id);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -127,6 +136,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.queryAllMyApplingProjectList(userId);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -136,6 +146,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.queryAllApplyMineMappingList(userId);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -145,6 +156,7 @@ public class PowerMappingImpl implements PowerMappingServer {
         try {
             return powerMapping.getProjectUserList(projectId);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -162,6 +174,7 @@ public class PowerMappingImpl implements PowerMappingServer {
             map.put("total",total);
             return map;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }

@@ -70,6 +70,7 @@ public class ProjectServerImpl implements ProjectServer {
             editeMapper.insert(de);
             return projectMapper.queryDetail(dp.getId(),dp.getCreator());
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -86,6 +87,7 @@ public class ProjectServerImpl implements ProjectServer {
            editeMapper.updateById(de);
            return projectMapper.queryDetail(dProject.getId(),dProject.getModifier());
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -108,6 +110,7 @@ public class ProjectServerImpl implements ProjectServer {
             if(dp.getWeb() != null) FileHandler.removeFile(dp.getWeb());
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -122,6 +125,7 @@ public class ProjectServerImpl implements ProjectServer {
             map.put("total",total);
             return map;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -131,6 +135,7 @@ public class ProjectServerImpl implements ProjectServer {
         try{
             return projectMapper.findByName(name);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -140,6 +145,7 @@ public class ProjectServerImpl implements ProjectServer {
         try{
             return projectMapper.findById(id);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -160,6 +166,7 @@ public class ProjectServerImpl implements ProjectServer {
             }
             return projectMapper.queryDetail(projectId,userId);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }

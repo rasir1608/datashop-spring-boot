@@ -1,5 +1,5 @@
 
-use `datashop`;
+-- use `datashop`;
 CREATE TABLE IF NOT EXISTS `d_power_mapping` (
   `id` int(11) NOT NULL AUTO_INCREMENT comment '用户id',
   `user_id` int(11) NOT NULL comment '用户账号',

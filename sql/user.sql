@@ -1,5 +1,5 @@
 
-use `datashop`;
+-- use `datashop`;
 CREATE TABLE IF NOT EXISTS `d_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT comment '用户id',
   `account` varchar(50) NOT NULL comment '用户账号',

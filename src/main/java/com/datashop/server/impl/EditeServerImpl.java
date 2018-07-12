@@ -23,6 +23,7 @@ public class EditeServerImpl implements EditeServer {
             editeMapper.insert(dEdite);
             return editeMapper.getDetail(dEdite.getKind(),dEdite.getTarget());
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -34,6 +35,7 @@ public class EditeServerImpl implements EditeServer {
             editeMapper.updateById(dEdite);
             return editeMapper.getDetail(dEdite.getKind(),dEdite.getTarget());
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -43,6 +45,7 @@ public class EditeServerImpl implements EditeServer {
         try{
             return editeMapper.getDetail(kind,target);
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -54,6 +57,7 @@ public class EditeServerImpl implements EditeServer {
             editeMapper.deleteById(id);
             return true;
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }
@@ -64,6 +68,7 @@ public class EditeServerImpl implements EditeServer {
 
             return editeMapper.findById(id);
         } catch (Exception e){
+            e.printStackTrace();
             throw new DatashopException(e.getMessage(),500);
         }
     }

@@ -23,11 +23,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     private Map<String,Object> exceptionHandle(HttpServletRequest req,Exception e){
-
-        for(int i = 0; i < e.getStackTrace().length ; i ++){
-            logger.debug(String.valueOf(e.getStackTrace()[i]));
-        }
-
         if(e instanceof DatashopException){
             DatashopException de = (DatashopException) e;
             return ResultUtil.error(de.getMessage(),de.getCode());

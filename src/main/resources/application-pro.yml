@@ -1,16 +1,19 @@
 jdbc:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://127.0.0.1:3306/datashop?useUnicode=true
-  userName: root
-  password: 123456
+  url: jdbc:mysql://dcds-m.dbsit.sfdc.com.cn:3306/dcds?useUnicode=true
+  userName: dcds
+  password: 6X2zyd1q4u
 
 
 server:
-  port: 8090
+  port: 8091
   context-path: /dataapi
 
 #filePath
 file:
   base-path: /app/nginx/html
-  static-path: /static
+  static-path: /public
+
+edite:
+  timeout: 300
 
