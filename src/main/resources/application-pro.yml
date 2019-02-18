@@ -1,8 +1,8 @@
 jdbc:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://dcds-m.dbsit.sfdc.com.cn:3306/dcds?useUnicode=true
-  userName: dcds
-  password: 6X2zyd1q4u
+  url: jdbc:mysql://203.195.210.16:3306/datashop?useUnicode=true
+  userName: root
+  password: 123456
 
 
 server:
